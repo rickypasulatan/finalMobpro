@@ -1,29 +1,28 @@
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
 import 'react-native-gesture-handler'
-import {createStackNavigator} from '@react-navigation/stack'
 import {Dashboard, History, Settings} from '../../pages/Patient'
+import {Drawer as CustomDrawer} from '../../components/molecules'
+import { Text } from 'react-native'
 
-const Stack = createStackNavigator()
+const Drawer = createDrawerNavigator()
 
 const PatientRouter = () => {
     return (
-        <Stack.Navigator>
-            <Stack.Screen
+        <Drawer.Navigator drawerContent={props => <CustomDrawer {...props}/>}>
+            <Drawer.Screen
                 name="Dashboard"
                 component={Dashboard}
-                options={{headerShown: false}}
             />
-            <Stack.Screen
+            <Drawer.Screen
                 name="History"
                 component={History}
-                options={{headerShown: false}}
             />
-            <Stack.Screen
+            <Drawer.Screen
                 name="Settings"
                 component={Settings}
-                options={{headerShown: false}}
             />
-        </Stack.Navigator>
+        </Drawer.Navigator>
     )
 }
 

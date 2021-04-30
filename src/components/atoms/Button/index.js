@@ -8,7 +8,7 @@ const Button = ({text, bgColor, textColor, onPress}) => {
 
     return (
         <TouchableOpacity style={[styles.buttonContainer, buttonBgColor]} onPress={onPress}>
-            <Text style={{color: textColor}}>test</Text>
+            <Text style={{color: textColor, paddingVertical: 5}}>{text}</Text>
         </TouchableOpacity>
     )
 }
@@ -16,7 +16,6 @@ const Button = ({text, bgColor, textColor, onPress}) => {
 const styles = StyleSheet.create({
     buttonContainer: {
         borderRadius: 999,
-        height: 30,
         alignItems: 'center',
         justifyContent: 'center'
     }
