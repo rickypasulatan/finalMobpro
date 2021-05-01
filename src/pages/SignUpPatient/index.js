@@ -45,6 +45,7 @@ const SignUpPatient = ({navigation}) => {
                             email: email,
                             phoneNum: phoneNum,
                             password: password,
+                            type: 'patient'
                         })
                         .then(() => {
                             showMessage({

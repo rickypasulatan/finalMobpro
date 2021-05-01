@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import {Button, Card} from '../../components/atoms'
 import TextInput from '../../components/atoms/TextInput'
 import {showMessage, hideMessage} from 'react-native-flash-message'
+import firebase from '../../config/firebase'
 
 const validEmail = e => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(e) ? '' : 'invalid email'
 const notEmpty = (e, src = '') => e.length > 0 ? '' : 'please input your ' + src
@@ -35,11 +36,35 @@ const SignUpHospital = ({navigation}) => {
                 hideOnPress: true
             })
         else
-            showMessage({
-                message: "Account successfully registered!",
-                type: 'success',
-                hideOnPress: true
-            })
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    firebase.database().ref('pengguna/' + userCredential.user.uid).set({
+                        name: name,
+                        email: email,
+                        password: password,
+                        type: 'hospital'
+                    })
+                    .then(() => {
+                        showMessage({
+                            message: "Account successfully registered!",
+                            type: 'success',
+                            hideOnPress: true
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        showMessage({
+                            message: error,
+                            type: 'success',
+                            hideOnPress: true
+                        })
+                    })
+                })
+                .catch(error => showMessage({
+                    message: error.message,
+                    type: 'danger',
+                    hideOnPress: true
+                }))
     }
 
     return (
