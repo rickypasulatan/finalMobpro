@@ -40,10 +40,29 @@ const SignUpPatient = ({navigation}) => {
         else
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(userCredential => {
-                    console.log(userCredential)
+                    firebase.database().ref('pengguna/' + userCredential.user.uid).set({
+                            name: name,
+                            email: email,
+                            phoneNum: phoneNum,
+                            password: password,
+                        })
+                        .then(() => {
+                            showMessage({
+                                message: "Account registered successfully",
+                                type: 'success',
+                                hideOnPress: true
+                            })
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            showMessage({
+                                message: error,
+                                type: 'danger',
+                                hideOnPress: true
+                            })
+                        })
                 })
                 .catch(error => {
-                    console.log(error)
                     showMessage({
                         message: error.message,
                         type: 'danger',
