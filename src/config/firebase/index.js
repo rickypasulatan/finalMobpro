@@ -1,12 +1,12 @@
 import firebase from 'firebase'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAFC_ivstIhE-sWefBBV5pcwXD5nnNrWqM",
-    authDomain: "finalmobpro.firebaseapp.com",
-    projectId: "finalmobpro",
-    storageBucket: "finalmobpro.appspot.com",
-    messagingSenderId: "593690153999",
-    appId: "1:593690153999:web:382d5108bf9ba818837f7a"
+    apiKey: "AIzaSyA_TuyVbAkyEODGsLkGGAlBMNf4Gt3FaJg",
+    authDomain: "finalmobpro-51125.firebaseapp.com",
+    projectId: "finalmobpro-51125",
+    storageBucket: "finalmobpro-51125.appspot.com",
+    messagingSenderId: "495516763778",
+    appId: "1:495516763778:web:834013fb9186f18b92169b"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
