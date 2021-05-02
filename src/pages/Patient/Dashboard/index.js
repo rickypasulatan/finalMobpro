@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ScrollView} from 'react-native';
 import {Button, Card} from '../../../components/atoms';
 import {Header} from '../../../components/molecules';
 
@@ -11,12 +11,12 @@ const Dashboard = ({navigation}) => {
   const doctor = 'Dr. Anodaly Thesaurus';
   const pfp = '../../../assets/Ben.png';
   const complaint =
-    'I feel headache after eating a food from L’s Kitchen. At first i felt severe pain in my brain cortex which result in me having a headache';
+    'I feel headache after eating a food fr...';
 
   return (
     <View>
       <Header navigation={navigation} title="Dashboard" />
-      <View style={{width: '100%', height: '100%'}}>
+      <ScrollView>
         <View style={{height: 200, paddingHorizontal: 15, paddingTop: 25}}>
           <Card>
             <View>
@@ -88,7 +88,7 @@ const Dashboard = ({navigation}) => {
             </View>
           </Card>
         </View> */}
-        <View style={{height: 400, paddingHorizontal: 15, paddingTop: 25}}>
+        <View style={{height: 270, paddingHorizontal: 15, paddingTop: 25, marginBottom: 100}}>
           <Card>
             <View>
               <View
@@ -111,7 +111,7 @@ const Dashboard = ({navigation}) => {
                   paddingTop: 25,
                 }}>
                 <View style={{paddingBottom: 30}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                   <Text style={{fontWeight: 'bold', fontSize: 16}}>
                     {hospitalName}
                   </Text>
                   <Text style={{fontSize: 16}}>{hospitalAddress}</Text>
@@ -127,7 +127,7 @@ const Dashboard = ({navigation}) => {
             </View>
           </Card>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
