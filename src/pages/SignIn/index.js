@@ -26,10 +26,11 @@ const SignIn = ({navigation}) => {
                                     name: data.name,
                                     email: data.email,
                                     phoneNum: data.phoneNum,
-                                    uid: userCredential.user.uid
+                                    uid: userCredential.user.uid,
+                                    type: data.type
                                 })
 
-                                navigation.replace("MainPatient")
+                                navigation.replace(data.type == "patient" ? "MainPatient" : "MainHospital")
                             } else {
                                 console.log("No Data Available when getting user info after sign in")
                             }

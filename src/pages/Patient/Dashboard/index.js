@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import { Button, Card } from '../../../components/atoms'
 import { Header } from '../../../components/molecules'
 
 const Dashboard = ({navigation}) => {
