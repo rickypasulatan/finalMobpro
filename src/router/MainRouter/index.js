@@ -7,6 +7,7 @@ import SignIn from '../../pages/SignIn'
 import PatientRouter from '../PatientRouter'
 import SignUpHospital from '../../pages/SignUpHospital'
 import SignUpPatient from '../../pages/SignUpPatient'
+import HospitalRouter from '../HospitalRouter'
 const Stack = createStackNavigator()
 
 const MainRouter = () => {
@@ -40,6 +41,11 @@ const MainRouter = () => {
             <Stack.Screen
                 name="MainPatient"
                 component={PatientRouter}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name="MainHospital"
+                component={HospitalRouter}
                 options={{headerShown: false}}
             />
         </Stack.Navigator>

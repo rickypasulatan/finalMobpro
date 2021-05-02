@@ -6,11 +6,7 @@ import { Button } from '../../atoms';
 import firebase from '../../../config/firebase'
 
 const Drawer = (props) => {
-    const routes = [
-        "Dashboard",
-        "History",
-        "Settings",
-    ]
+    const routes = props.routes;
 
     const signOutHandler = () => {
         firebase.auth().signOut()
