@@ -42,6 +42,7 @@ const SignUpHospital = ({navigation}) => {
                         name: name,
                         email: email,
                         password: password,
+                        roomCapacity: 0,
                         type: 'hospital'
                     })
                     .then(() => {
@@ -55,7 +56,7 @@ const SignUpHospital = ({navigation}) => {
                         console.log(error)
                         showMessage({
                             message: error,
-                            type: 'success',
+                            type: 'danger',
                             hideOnPress: true
                         })
                     })
