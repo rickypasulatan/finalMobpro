@@ -23,11 +23,8 @@ const SignIn = ({navigation}) => {
                                 const data = snapshot.val()
 
                                 backendData.setUserDetail({
-                                    name: data.name,
-                                    email: data.email,
-                                    phoneNum: data.phoneNum,
+                                    ...data,
                                     uid: userCredential.user.uid,
-                                    type: data.type
                                 })
 
                                 navigation.replace(data.type == "patient" ? "MainPatient" : "MainHospital")
