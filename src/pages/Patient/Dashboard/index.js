@@ -111,7 +111,7 @@ const Dashboard = ({navigation}) => {
                   paddingTop: 25,
                 }}>
                 <View style={{paddingBottom: 30}}>
-                   <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                  <Text style={{fontWeight: 'bold', fontSize: 16}}>
                     {hospitalName}
                   </Text>
                   <Text style={{fontSize: 16}}>{hospitalAddress}</Text>
