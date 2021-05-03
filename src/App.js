@@ -16,12 +16,17 @@ const App = () => {
         setBackendData(prevState => ({...prevState, userData: data}))
     }
 
+    const getUserDetail = () => {
+        return backendData.userData
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor='transparent'/>
             <BackendDataProvider value={{
                 data:backendData,
                 setUserDetail: setUserDetail,
+                getUserDetail, getUserDetail,
             }}>
                 <NavigationContainer>
                     <MainRouter/>
