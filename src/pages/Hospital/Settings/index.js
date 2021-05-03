@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {Header} from '../../../components/molecules';
 import {Card, Button} from '../../../components/atoms';
 import {TextInput} from '../../../components/atoms';
@@ -9,7 +9,7 @@ const Settings = ({navigation}) => {
   return (
     <View>
       <Header navigation={navigation} title="Settings" />
-      <View style={{width: '100%', height: '100%'}}>
+      <ScrollView style={{width: '100%'}}>
         <View style={{height: 250, paddingHorizontal: 25, paddingTop: 30}}>
           <Card>
             <View>
@@ -40,7 +40,7 @@ const Settings = ({navigation}) => {
             </View>
           </Card>
         </View>
-        <View style={{height: 250, paddingHorizontal: 25, paddingTop: 30}}>
+        <View style={{height: 250, paddingHorizontal: 25, paddingTop: 30, marginBottom: 150}}>
           <Card>
             <View>
               <View
@@ -66,14 +66,14 @@ const Settings = ({navigation}) => {
                     placeholder="**********"
                   />
                 </View>
-                <View style={{marginTop: 20, paddingHorizontal: 80}}>
+                <View style={{marginVertical: 20, paddingHorizontal: 80}}>
                   <Button bgColor="#F4511E" text="Change" textColor="black" />
                 </View>
               </View>
             </View>
           </Card>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
