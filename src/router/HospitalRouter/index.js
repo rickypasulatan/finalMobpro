@@ -1,16 +1,15 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
-import 'react-native-gesture-handler'
-import {Dashboard, History, Settings} from '../../pages/Patient'
-import {Drawer as CustomDrawer} from '../../components/molecules'
-import { Text } from 'react-native'
+import { View, Text } from 'react-native'
+import { Drawer as CustomDrawer } from '../../components/molecules'
+import { Appointments, Dashboard, Settings } from '../../pages/Hospital'
 
 const Drawer = createDrawerNavigator()
 
-const PatientRouter = () => {
+const HospitalRouter = () => {
     const routes = [
         "Dashboard",
-        "History",
+        "Appointments",
         "Settings",
     ]
 
@@ -21,8 +20,8 @@ const PatientRouter = () => {
                 component={Dashboard}
             />
             <Drawer.Screen
-                name="History"
-                component={History}
+                name="Appointments"
+                component={Appointments}
             />
             <Drawer.Screen
                 name="Settings"
@@ -32,4 +31,4 @@ const PatientRouter = () => {
     )
 }
 
-export default PatientRouter
+export default HospitalRouter
