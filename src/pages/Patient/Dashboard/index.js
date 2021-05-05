@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity, TextInput as NativeTextInput} from 'react-native';
 import {Button, Card, TextInput} from '../../../components/atoms';
 import {Header} from '../../../components/molecules';
@@ -13,6 +13,7 @@ const Dashboard = ({navigation}) => {
   const [availableHospital, setAvailableHospital] = useState([])
   const [selectedAvailableHospital, setSelectedAvailableHospital] = useState({})
   const [isCreateAppointmentModalVisible, setIsCreateAppointmentModalVisible] = useState(false)
+  const [currentAppointments, setCurrentAppointments] = useState([])
   const [currentModalPage, setCurrentModalPage] = useState(0)
   const [complaint, setComplaint] = useState('')
   const backendData = useContext(BackendDataContext)
@@ -24,6 +25,64 @@ const Dashboard = ({navigation}) => {
   const doctor = 'Dr. Anodaly Thesaurus';
   const pfp = '../../../assets/Ben.png';
   //const complainttex = 'I feel headache after eating a food fr...';
+
+  const fetchCurrentAppointments = () => {
+    firebase.database()
+      .ref('appointments')
+      .orderByChild('patientUid')
+      .equalTo(backendData.getUserDetail().uid).get()
+      .then(snapshot => {
+        if(snapshot.exists()) {
+          let data = []
+          let retrievedData = snapshot.val()
+          let keys = Object.keys(retrievedData)
+          
+          for(let i=0; i<keys.length; i++) {
+            data.push(retrievedData[keys[i]])
+          }
+
+          firebase.database()
+            .ref('pengguna')
+            .child(data[0].hospitalUid)
+            .get()
+            .then(snapshot => {
+              if(snapshot.exists()) {
+                const {latitude, longitude, name: hospName} = snapshot.val()
+
+                fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+                  .then(resp => resp.json())
+                  .then(datajson => {
+                    data[0] = {
+                      ...data[0], 
+                      address: datajson.display_name,
+                      hospitalName: hospName,
+                    }
+
+                    console.log(data)
+
+                    setCurrentAppointments(data)
+                  })
+                  .catch(error => {
+                    console.log("couldn't get location info of hospital in current appointment")
+                  })
+              } else {
+                console.log("error getting hospital data of current appointment")
+              }
+            })
+            .catch(error => {
+              console.log("Failed getting hospital data from uid,", error)
+            })
+        } else {
+          setCurrentAppointments([])
+        }
+      })
+  }
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', fetchCurrentAppointments)
+
+    return unsubscribe
+  }, [navigation])
 
   const getAvailableHospitalListHandler = () => {
     firebase.database().ref().child('pengguna').get()
@@ -122,81 +181,76 @@ const Dashboard = ({navigation}) => {
             </View>
           </Card>
         </View>
-
-
-        <View style={{height: 400, paddingHorizontal: 15, paddingTop: 25, marginBottom: 150}}>
-          <Card>
-            <View>
-              <View
-                style={{
-                  backgroundColor: '#838383',
-                  height: 50,
-                  justifyContent: 'center',
-                  paddingLeft: 15,
-                }}>
-                <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
-                  Current Appointment
-                </Text>
-              </View>
-
-              <View style={{flexDirection:'column'}}>
-                <View style={{padding:30, paddingTop: 80, paddingHorizontal: 80,alignItems:'center'}}>
-                  <Text style={{fontSize: 18, color: '#838383', textAlign:'center'}}>
-                    There are currently no appointment
+        {
+          currentAppointments.length > 0 ?
+          <View style={{height: 270, paddingHorizontal: 15, paddingTop: 25, marginBottom: 100}}>
+            <Card>
+              <View>
+                <View
+                  style={{
+                    backgroundColor: '#F5411E',
+                    height: 50,
+                    justifyContent: 'center',
+                    paddingLeft: 15,
+                  }}>
+                  <Text
+                    style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                    Current Appointment
                   </Text>
                 </View>
-                <View style={{padding:70, paddingHorizontal:60}}>
-                  <Button
-                    bgColor="#F4511E"
-                    text="Create Appointment"
-                    textColor="white"
-                    onPress={() => setIsCreateAppointmentModalVisible(true)}
-                  />
-                </View>
-              </View>
-            </View>
-          </Card>
-        </View>
-        {/* <View style={{height: 270, paddingHorizontal: 15, paddingTop: 25, marginBottom: 100}}>
-          <Card>
-            <View>
-              <View
-                style={{
-                  backgroundColor: '#F5411E',
-                  height: 50,
-                  justifyContent: 'center',
-                  paddingLeft: 15,
-                }}>
-                <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-                  Current Appointment
-                </Text>
-              </View>
 
-              <View
-                style={{
-                  flexDirection: 'column',
-                  paddingHorizontal: 15,
-                  paddingTop: 25,
-                }}>
-                <View style={{paddingBottom: 30}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                    {hospitalName}
-                  </Text>
-                  <Text style={{fontSize: 16}}>{hospitalAddress}</Text>
-                  <Text style={{fontSize: 16}}>Doctor - {doctor}</Text>
-                </View>
-                <View style={{paddingRight: 10}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                    Complaint:
-                  </Text>
-                  <Text style={{fontSize: 16}}>{complaint}</Text>
+                <View style={{padding: 15}}>
+                  <Text style={{fontWeight: 'bold', fontSize: 16}}>{currentAppointments[0].hospitalName}</Text>
+                  <Text style={{fontSize: 16}}>{currentAppointments[0].address}</Text>
+                  {
+                    currentAppointments[0].doctor ?
+                    <Text style={{fontSize: 16}}>{currentAppointments[0].doctor}</Text>
+                    :
+                    <Text style={{fontSize: 16}}>Waiting for hospital to approve</Text>
+                  }
+
+                  <Text style={{fontWeight: 'bold', marginTop: 25, fontSize: 16}}>Complaint : </Text>
+                  <Text style={{fontSize: 16}}>{currentAppointments[0].complaint}</Text>
                 </View>
               </View>
-            </View>
-          </Card>
-        </View> */}
+            </Card>
+          </View>
+          :
+          <View style={{height: 400, paddingHorizontal: 15, paddingTop: 25, marginBottom: 150}}>
+            <Card>
+              <View>
+                <View
+                  style={{
+                    backgroundColor: '#838383',
+                    height: 50,
+                    justifyContent: 'center',
+                    paddingLeft: 15,
+                  }}>
+                  <Text
+                    style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
+                    Current Appointment
+                  </Text>
+                </View>
+
+                <View style={{flexDirection:'column'}}>
+                  <View style={{padding:30, paddingTop: 80, paddingHorizontal: 80,alignItems:'center'}}>
+                    <Text style={{fontSize: 18, color: '#838383', textAlign:'center'}}>
+                      There are currently no appointment
+                    </Text>
+                  </View>
+                  <View style={{padding:70, paddingHorizontal:60}}>
+                    <Button
+                      bgColor="#F4511E"
+                      text="Create Appointment"
+                      textColor="white"
+                      onPress={() => setIsCreateAppointmentModalVisible(true)}
+                    />
+                  </View>
+                </View>
+              </View>
+            </Card>
+          </View>
+        }
       </ScrollView>
 
       <Modal isVisible={isCreateAppointmentModalVisible}>

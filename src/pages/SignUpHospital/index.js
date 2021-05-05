@@ -4,6 +4,7 @@ import {Button, Card} from '../../components/atoms'
 import TextInput from '../../components/atoms/TextInput'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import firebase from '../../config/firebase'
+import GetLocation from 'react-native-get-location'
 
 const validEmail = e => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(e) ? '' : 'invalid email'
 const notEmpty = (e, src = '') => e.length > 0 ? '' : 'please input your ' + src
@@ -14,7 +15,7 @@ const SignUpHospital = ({navigation}) => {
     const [password, setPassword] = useState('')
 
     const submitHandler = () => {
-        let error, i, inputs
+        let error, i, inputs, latitude, longitude
 
         inputs = [
             () => notEmpty(name, "name"),
@@ -38,28 +39,41 @@ const SignUpHospital = ({navigation}) => {
         else
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(userCredential => {
-                    firebase.database().ref('pengguna/' + userCredential.user.uid).set({
-                        name: name,
-                        email: email,
-                        password: password,
-                        roomCapacity: 0,
-                        type: 'hospital'
+
+                    GetLocation.getCurrentPosition({
+                        enableHighAccuracy: true,
+                        timeout: 15000,
                     })
-                    .then(() => {
-                        showMessage({
-                            message: "Account successfully registered!",
-                            type: 'success',
-                            hideOnPress: true
+                    .then(location => {
+                        firebase.database().ref('pengguna/' + userCredential.user.uid).set({
+                            name: name,
+                            email: email,
+                            password: password,
+                            roomCapacity: 0,
+                            latitude: location.latitude,
+                            longitude: location.longitude,
+                            type: 'hospital',
+                        })
+                        .then(() => {
+                            showMessage({
+                                message: "Account successfully registered!",
+                                type: 'success',
+                                hideOnPress: true
+                            })
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            showMessage({
+                                message: error,
+                                type: 'danger',
+                                hideOnPress: true
+                            })
                         })
                     })
                     .catch(error => {
-                        console.log(error)
-                        showMessage({
-                            message: error,
-                            type: 'danger',
-                            hideOnPress: true
-                        })
+                        console.log("error getting location ", error)
                     })
+
                 })
                 .catch(error => showMessage({
                     message: error.message,
