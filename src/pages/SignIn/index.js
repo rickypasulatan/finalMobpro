@@ -15,6 +15,8 @@ const SignIn = ({navigation}) => {
         if(email.length < 1) return
         if(password.length < 1) return
 
+        console.log("Logging user in")
+
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(userCredential => {
                 firebase.database().ref().child("pengguna").child(userCredential.user.uid).get()
