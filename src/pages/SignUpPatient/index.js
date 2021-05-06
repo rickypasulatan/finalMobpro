@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import {Button, Card} from '../../components/atoms'
 import TextInput from '../../components/atoms/TextInput'
 import firebase from '../../config/firebase'
 import {showMessage, hideMessage} from 'react-native-flash-message'
+import { launchImageLibrary } from 'react-native-image-picker'
 
 const validEmail = e => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(e) ? '' : 'invalid email'
 const notEmpty = (e, src = '') => e.length > 0 ? '' : 'please input your ' + src
@@ -13,6 +14,7 @@ const SignUpPatient = ({navigation}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [phoneNum, setPhoneNum] = useState('')
+    const [profilePicB64, setProfilePicB64] = useState('')
 
     const submitHandler = () => {
         let error, i, inputs
@@ -45,6 +47,7 @@ const SignUpPatient = ({navigation}) => {
                             email: email,
                             phoneNum: phoneNum,
                             password: password,
+                            profilePic: profilePicB64,
                             type: 'patient'
                         })
                         .then(() => {
@@ -72,14 +75,49 @@ const SignUpPatient = ({navigation}) => {
                 })
     }
 
+    const addPhotoHandler = () => {
+        launchImageLibrary({
+            mediaType: 'photo',
+            maxHeight: 128,
+            maxWidth: 128,
+            includeBase64: true
+        }, ({didCancel, errorMessage, base64}) => {
+            if(didCancel) {
+                showMessage({
+                    message: "Cancelled profile picture picking",
+                    type: 'warning',
+                    autoHide: true
+                })
+                return
+            }
+
+            if(errorMessage) {
+                showMessage({
+                    message: errorMessage,
+                    type: 'warning',
+                    autoHide: true
+                })
+                return
+            }
+
+            setProfilePicB64(base64)
+        })
+    }
+
     return (
-        <View style={{backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'}}>
+        <ScrollView style={{backgroundColor: '#F4511E', width: '100%'}} contentContainerStyle={{alignItems: 'center'}}>
             <Image source={require('../../assets/healthwell.png')} style={{transform: [{scale: 0.5}]}}/>
-            <View style={{height: 400, width: 350}}>
+            <View style={{height: 480, width: 350, marginBottom: 50}}>
                 <Card>
                     <View style={{alignItems: 'center', paddingHorizontal: 20, paddingTop: 25}}>
                         <Text style={{fontWeight: 'bold', marginBottom: 5}}> Register Patient </Text>
                         
+                        <TouchableOpacity onPress={addPhotoHandler}>
+                            <View style={{backgroundColor: '#F0F0F0', width: 70, height: 70, borderRadius: 999, alignItems: 'center', justifyContent: 'center', overflow: 'hidden'}}>
+                                {profilePicB64 ? <Image source={{uri: `data:image/jpeg;base64,${profilePicB64}`}} style={{width: 70, height: 70}}/> : <Text>Add photo</Text>}
+                            </View>
+                        </TouchableOpacity>
+
                         <View style={styles.textInputGroup}>
                             <Text style={styles.labelText}> Name </Text>
                             <TextInput
@@ -128,7 +166,7 @@ const SignUpPatient = ({navigation}) => {
                     </View>
                 </Card>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
