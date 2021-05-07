@@ -10,6 +10,16 @@ import moment from 'moment'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import GetLocation from 'react-native-get-location'
 
+//https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+const calculateDistance = (latitude1, longitude1, latitude2, longitude2) => {
+  const p = 0.017453292519943295, c = Math.cos
+  const a = 0.5 - c((latitude2 - latitude1) * p) / 2 +
+            c(latitude1 * p) * c(latitude2 * p) *
+            (1 - c((longitude2 - longitude1) * p)) / 2
+  
+  return 12742 * Math.asin(Math.sqrt(a))
+}
+
 const Dashboard = ({navigation}) => {
   const [availableHospital, setAvailableHospital] = useState([])
   const [selectedAvailableHospital, setSelectedAvailableHospital] = useState({})
@@ -117,15 +127,27 @@ const Dashboard = ({navigation}) => {
 
           let hospitals = []
 
-          for(let i=0; i<userIdList.length; i++) {
-            if(data[userIdList[i]].type === "hospital" && 
-                data[userIdList[i]].roomCapacity > 0) {
-              hospitals.push(data[userIdList[i]])
-            }
-          }
           
-          console.log(hospitals)
-          setAvailableHospital(hospitals);
+          
+          GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+          })
+          .then(location => {
+            const {latitude, longitude} = location
+      
+            hospitals.map(el => console.log(calculateDistance(el.latitude, el.longitude, latitude, longitude)))
+
+            for(let i=0; i<userIdList.length; i++) {
+              if(data[userIdList[i]].type === "hospital" && 
+                  data[userIdList[i]].roomCapacity > 0 &&
+                  calculateDistance(data[userIdList[i]].latitude, data[userIdList[i]].longitude, latitude, longitude) <= 17) {
+                hospitals.push(data[userIdList[i]])
+              }
+            }
+
+            setAvailableHospital(hospitals);
+          })
         } else {
           console.log("No data available for pengguna")
         }
