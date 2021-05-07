@@ -20,13 +20,23 @@ const App = () => {
         return backendData.userData
     }
 
+    const setAppointments = data => {
+        setBackendData(prevState => ({...prevState, appointments: data}))
+    }
+
+    const getAppointments = () => {
+        return backendData.appointments
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor='transparent'/>
             <BackendDataProvider value={{
                 data:backendData,
                 setUserDetail: setUserDetail,
-                getUserDetail, getUserDetail,
+                getUserDetail: getUserDetail,
+                setAppointments: setAppointments,
+                getAppointments: getAppointments,
             }}>
                 <NavigationContainer>
                     <MainRouter/>

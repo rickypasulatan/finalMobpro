@@ -89,13 +89,26 @@ const Appointments = ({navigation}) => {
                                                                                     status: 'completed',
                                                                                 })
                                                                                 .then(() => {
-                                                                                    showMessage({
-                                                                                        message: "Appointment completed",
-                                                                                        type: 'success',
-                                                                                        hideOnPress: true
+                                                                                    backendData.setUserDetail({
+                                                                                        ...backendData.getUserDetail(),
+                                                                                        roomCapacity: backendData.getUserDetail().roomCapacity + 1
                                                                                     })
+
+                                                                                    firebase.database()
+                                                                                        .ref(`pengguna/${backendData.getUserDetail().uid}`)
+                                                                                        .set(backendData.getUserDetail())
+                                                                                        .then(() => {
+                                                                                            
+
+                                                                                            showMessage({
+                                                                                                message: "Appointment completed",
+                                                                                                type: 'success',
+                                                                                                hideOnPress: true
+                                                                                            })
+                                                                                            
+                                                                                            fetchCurrentAppointments()
+                                                                                        })
                                                                                     
-                                                                                    fetchCurrentAppointments()
                                                                                 })
                                                                                 .catch(error => {
                                                                                     console.log(error)
@@ -150,15 +163,28 @@ const Appointments = ({navigation}) => {
                                                 status: 'ongoing',
                                             })
                                             .then(() => {
-                                                showMessage({
-                                                    message: "Appointment approved",
-                                                    type: 'success',
-                                                    hideOnPress: true
+                                                backendData.setUserDetail({
+                                                    ...backendData.getUserDetail(),
+                                                    roomCapacity: backendData.getUserDetail().roomCapacity - 1
                                                 })
                                                 
-                                                fetchCurrentAppointments()
-                                                setAssignedDoctor('')
-                                                setIsModalVisible(false)
+                                                firebase.database()
+                                                    .ref(`pengguna/${backendData.getUserDetail().uid}`)
+                                                    .set(backendData.getUserDetail())
+                                                    .then(() => {
+                                                        
+
+                                                        showMessage({
+                                                            message: "Appointment approved",
+                                                            type: 'success',
+                                                            hideOnPress: true
+                                                        })
+
+                                                        fetchCurrentAppointments()
+                                                        setAssignedDoctor('')
+                                                        setIsModalVisible(false)
+                                                    })
+                                                
                                             })
                                             .catch(error => {
                                                 console.log(error)

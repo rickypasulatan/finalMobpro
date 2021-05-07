@@ -3,8 +3,6 @@ import { View, Text } from 'react-native'
 import { Header } from '../../../components/molecules'
 import {Card, Button} from '../../../components/atoms'
 import {TextInput} from '../../../components/atoms'
-import { version } from '@babel/core'
-import { color } from 'react-native-reanimated'
 
 const Settings = ({navigation}) => {
     const [name, setName] = useState('');
