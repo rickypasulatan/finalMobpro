@@ -45,8 +45,6 @@ const Dashboard = ({navigation}) => {
             return 0
           })
 
-          console.log(data)
-
           firebase.database()
             .ref('pengguna')
             .child(data[0].hospitalUid)
@@ -64,10 +62,10 @@ const Dashboard = ({navigation}) => {
                       hospitalName: hospName,
                     }
 
-                    console.log(data)
-
-                    setCurrentAppointments(data)
+                    console.log("after fetch map data", data)
+                    
                     backendData.setAppointments(data)
+                    setCurrentAppointments(data)
                   })
                   .catch(error => {
                     console.log("couldn't get location info of hospital in current appointment")
@@ -80,8 +78,8 @@ const Dashboard = ({navigation}) => {
               console.log("Failed getting hospital data from uid,", error)
             })
         } else {
-          setCurrentAppointments([])
           backendData.setAppointments([])
+          setCurrentAppointments([])
         }
       })
   }
@@ -142,6 +140,7 @@ const Dashboard = ({navigation}) => {
       patientUid: backendData.getUserDetail().uid,
       hospitalUid: selectedAvailableHospital.uid,
       patientName: backendData.getUserDetail().name,
+      hospitalName: selectedAvailableHospital.name,
       complaint: complaint,
       date: moment().format('DD-MM-YYYY HH:mm:ss'),
       status: 'awaiting',
@@ -154,6 +153,8 @@ const Dashboard = ({navigation}) => {
         type: 'success',
         hideOnPress: true
       })
+
+      fetchCurrentAppointments()
     })
     .catch(error => {
       console.log(error)
