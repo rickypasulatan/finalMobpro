@@ -51,22 +51,35 @@ const SignUp = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  healthWellLogo: {transform: [{scale: 0.5}]},
+  healthWellLogo: {
+    transform: [{scale: 0.5}]
+  },
   container: {
     backgroundColor: '#F4511E',
     width: '100%',
     height: '100%',
     alignItems: 'center',
   },
-  cardContainer: {height: 230, width: 350},
+  cardContainer: {
+    height: 230,
+    width: 350,
+  },
   innerCardContainer: {
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 37,
   },
-  userTypeText: {fontWeight: 'bold', marginBottom: 25},
-  pickerSection: {backgroundColor: '#F3F3F3', borderRadius: 15},
-  nextButton: {width: 150},
+  userTypeText: {
+    fontWeight: 'bold',
+    marginBottom: 25,
+  },
+  pickerSection: {
+    backgroundColor: '#F3F3F3',
+    borderRadius: 15,
+  },
+  nextButton: {
+    width: 150,
+  },
   labelText: {
     fontWeight: 'bold',
   },
