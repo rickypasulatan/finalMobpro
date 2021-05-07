@@ -3,98 +3,91 @@ import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {Header} from '../../../components/molecules';
 import {Card, Button} from '../../../components/atoms';
 import {TextInput} from '../../../components/atoms';
-import firebase from '../../../config/firebase';
+import firebase from '../../../config/firebase'
 import BackendDataContext from '../../../contexts/backendDataContext';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage, hideMessage} from 'react-native-flash-message'
 
 const Settings = ({navigation}) => {
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [roomCapacity, setRoomCapacity] = useState('');
-  const backendData = useContext(BackendDataContext);
-
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [roomCapacity, setRoomCapacity] = useState('')
+  const backendData = useContext(BackendDataContext)
+  
   const setNewNameHandler = () => {
-    firebase
-      .database()
-      .ref(`pengguna/${backendData.getUserDetail().uid}`)
-      .set({
-        ...backendData.getUserDetail(),
-        name: name,
+    firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
+      ...backendData.getUserDetail(),
+      name: name,
+    })
+    .then(() => {
+      showMessage({
+        message: "Name successfully changed",
+        type: 'success',
+        hideOnPress: true
       })
-      .then(() => {
-        showMessage({
-          message: 'Name successfully changed',
-          type: 'success',
-          hideOnPress: true,
-        });
 
-        //update the local data
-        backendData.setUserDetail({
-          ...backendData.getUserDetail(),
-          name: name,
-        });
+      //update the local data
+      backendData.setUserDetail({
+        ...backendData.getUserDetail(),
+        name: name
       })
-      .catch(() => {
-        console.log(error);
-        showMessage({
+    })
+    .catch(() => {
+      console.log(error)
+      showMessage({
           message: error,
           type: 'success',
-          hideOnPress: true,
-        });
-      });
-  };
+          hideOnPress: true
+      })
+    })
+  }
 
   const setNewPasswordHandler = () => {
-    firebase
-      .auth()
-      .currentUser.updatePassword(password)
+    firebase.auth().currentUser.updatePassword(password)
       .then(() => {
         showMessage({
-          message: 'Password successfully changed',
+          message: "Password successfully changed",
           type: 'success',
-          hideOnPress: true,
-        });
+          hideOnPress: true
+        })
       })
       .catch(() => {
-        console.log(error);
+        console.log(error)
         showMessage({
-          message: error,
-          type: 'success',
-          hideOnPress: true,
-        });
-      });
-  };
+            message: error,
+            type: 'success',
+            hideOnPress: true
+        })
+      })
+  }
 
   const setNewRoomCapacityHandler = () => {
-    firebase
-      .database()
-      .ref(`pengguna/${backendData.getUserDetail().uid}`)
-      .set({
-        ...backendData.getUserDetail(),
-        roomCapacity: parseInt(roomCapacity),
+    firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
+      ...backendData.getUserDetail(),
+      roomCapacity: parseInt(roomCapacity)
+    })
+    .then(() => {
+      showMessage({
+        message: "Room capacity successfully changed",
+        type: 'success',
+        hideOnPress: true
       })
-      .then(() => {
-        showMessage({
-          message: 'Room capacity successfully changed',
-          type: 'success',
-          hideOnPress: true,
-        });
 
-        //update the local data
-        backendData.setUserDetail({
-          ...backendData.getUserDetail(),
-          roomCapacity: parseInt(roomCapacity),
-        });
+      //update the local data
+      backendData.setUserDetail({
+        ...backendData.getUserDetail(),
+        roomCapacity: parseInt(roomCapacity)
       })
-      .catch(() => {
-        console.log(error);
-        showMessage({
+    })
+    .catch(() => {
+      console.log(error)
+      showMessage({
           message: error,
           type: 'success',
-          hideOnPress: true,
-        });
-      });
-  };
+          hideOnPress: true
+      })
+    })
+  }
+
 
   return (
     <View>
@@ -103,11 +96,14 @@ const Settings = ({navigation}) => {
         <View style={styles.innerContainer}>
           <Card>
             <View>
-              <View style={styles.orangeCardHeaderContainer}>
+              <View
+                style={styles.orangeCardHeaderContainer}>
                 <Text style={styles.boldText}>Name</Text>
               </View>
               <View style={styles.cardContentContainer}>
-                <Text style={styles.boldText}>Enter new name</Text>
+                <Text style={styles.boldText}>
+                  Enter new name
+                </Text>
                 <View style={styles.textInputContainer}>
                   <TextInput
                     value={name}
@@ -116,28 +112,28 @@ const Settings = ({navigation}) => {
                   />
                 </View>
                 <View style={styles.changeButton}>
-                  <Button
-                    bgColor="#6200EE"
-                    text="Change"
-                    textColor="white"
-                    onPress={setNewNameHandler}
-                  />
+                  <Button bgColor="#6200EE" text="Change" textColor="white" onPress={setNewNameHandler}/>
                 </View>
               </View>
             </View>
           </Card>
         </View>
 
+
         <View style={styles.innerContainer}>
           <Card>
             <View>
-              <View style={styles.purpleCardHeaderContainer}>
-                <Text style={[styles.boldText, {color: 'white'}]}>
+              <View
+                style={styles.purpleCardHeaderContainer}>
+                <Text
+                  style={[styles.boldText, {color: 'white'}]}>
                   Password
                 </Text>
               </View>
               <View style={styles.cardContentContainer}>
-                <Text style={styles.boldText}>Enter new password</Text>
+                <Text style={styles.boldText}>
+                  Enter new password
+                </Text>
                 <View style={styles.textInputContainer}>
                   <TextInput
                     value={password}
@@ -147,28 +143,28 @@ const Settings = ({navigation}) => {
                   />
                 </View>
                 <View style={styles.changeButton}>
-                  <Button
-                    bgColor="#F4511E"
-                    text="Change"
-                    textColor="black"
-                    onPress={setNewPasswordHandler}
-                  />
+                  <Button bgColor="#F4511E" text="Change" textColor="black" onPress={setNewPasswordHandler}/>
                 </View>
               </View>
             </View>
           </Card>
         </View>
 
+
         <View style={[styles.innerContainer, {marginBottom: 150}]}>
           <Card>
             <View>
-              <View style={styles.orangeCardHeaderContainer}>
-                <Text style={[styles.boldText, {color: 'black'}]}>
+              <View
+                style={styles.orangeCardHeaderContainer}>
+                <Text
+                  style={[styles.boldText, {color: 'black'}]}>
                   Room Capacity
                 </Text>
               </View>
               <View style={styles.cardContentContainer}>
-                <Text style={styles.boldText}>Enter new room capacity</Text>
+                <Text style={styles.boldText}>
+                  Enter new room capacity
+                </Text>
                 <View style={styles.textInputContainer}>
                   <TextInput
                     value={roomCapacity}
@@ -177,17 +173,14 @@ const Settings = ({navigation}) => {
                   />
                 </View>
                 <View style={styles.changeButton}>
-                  <Button
-                    bgColor="#F4511E"
-                    text="Change"
-                    textColor="black"
-                    onPress={setNewRoomCapacityHandler}
-                  />
+                  <Button bgColor="#F4511E" text="Change" textColor="black" onPress={setNewRoomCapacityHandler}/>
                 </View>
               </View>
             </View>
           </Card>
         </View>
+
+
       </ScrollView>
     </View>
   );

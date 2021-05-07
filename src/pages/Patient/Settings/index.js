@@ -1,218 +1,185 @@
-import React, {useContext, useState} from 'react';
-import {View, Text, ScrollView, Image, StyleSheet} from 'react-native';
-import {Header} from '../../../components/molecules';
-import {Card, Button} from '../../../components/atoms';
-import {TextInput} from '../../../components/atoms';
-import BackendDataContext from '../../../contexts/backendDataContext';
-import firebase from '../../../config/firebase';
-import {showMessage} from 'react-native-flash-message';
-import {launchImageLibrary} from 'react-native-image-picker';
+import React, {useContext, useState} from 'react'
+import { View, Text, ScrollView, Image, StyleSheet } from 'react-native'
+import { Header } from '../../../components/molecules'
+import {Card, Button} from '../../../components/atoms'
+import {TextInput} from '../../../components/atoms'
+import BackendDataContext from '../../../contexts/backendDataContext'
+import firebase from '../../../config/firebase'
+import { showMessage } from 'react-native-flash-message'
+import { launchImageLibrary } from 'react-native-image-picker'
 
 const Settings = ({navigation}) => {
-  const backendData = useContext(BackendDataContext);
+    const backendData = useContext(BackendDataContext)
 
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
 
-  const setNewNameHandler = () => {
-    firebase
-      .database()
-      .ref(`pengguna/${backendData.getUserDetail().uid}`)
-      .set({
-        ...backendData.getUserDetail(),
-        name: name,
-      })
-      .then(() => {
-        showMessage({
-          message: 'Name successfully changed',
-          type: 'success',
-          hideOnPress: true,
-        });
-
-        //update the local data
-        backendData.setUserDetail({
-          ...backendData.getUserDetail(),
-          name: name,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        showMessage({
-          message: error,
-          type: 'success',
-          hideOnPress: true,
-        });
-      });
-  };
-
-  const setNewProfilePicHandler = () => {
-    launchImageLibrary(
-      {
-        mediaType: 'photo',
-        maxHeight: 128,
-        maxWidth: 128,
-        includeBase64: true,
-      },
-      ({didCancel, errorMessage, base64}) => {
-        if (didCancel) {
-          showMessage({
-            message: 'Cancelled profile picture picking',
-            type: 'warning',
-            autoHide: true,
-          });
-          return;
-        }
-
-        if (errorMessage) {
-          showMessage({
-            message: errorMessage,
-            type: 'warning',
-            autoHide: true,
-          });
-          return;
-        }
-
-        firebase
-          .database()
-          .ref(`pengguna/${backendData.getUserDetail().uid}`)
-          .set({
+    const setNewNameHandler = () => {
+        firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
             ...backendData.getUserDetail(),
-            profilePic: base64,
-          })
-          .then(() => {
+            name: name,
+        })
+        .then(() => {
             showMessage({
-              message: 'Profile picture successfully changed',
-              type: 'success',
-              hideOnPress: true,
-            });
+            message: "Name successfully changed",
+            type: 'success',
+            hideOnPress: true
+            })
 
             //update the local data
             backendData.setUserDetail({
-              ...backendData.getUserDetail(),
-              profilePic: base64,
-            });
-          })
-          .catch(error => {
-            console.log(error);
+            ...backendData.getUserDetail(),
+            name: name
+            })
+        })
+        .catch((error) => {
+            console.log(error)
             showMessage({
-              message: error,
-              type: 'success',
-              hideOnPress: true,
-            });
-          });
-      },
-    );
-  };
+                message: error,
+                type: 'success',
+                hideOnPress: true
+            })
+        })
+    }
 
-  const setNewPasswordHandler = () => {
-    firebase
-      .auth()
-      .currentUser.updatePassword(password)
-      .then(() => {
-        showMessage({
-          message: 'Password successfully changed',
-          type: 'success',
-          hideOnPress: true,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+    const setNewProfilePicHandler = () => {
+        launchImageLibrary({
+            mediaType: 'photo',
+            maxHeight: 128,
+            maxWidth: 128,
+            includeBase64: true
+        }, ({didCancel, errorMessage, base64}) => {
+            if(didCancel) {
+                showMessage({
+                    message: "Cancelled profile picture picking",
+                    type: 'warning',
+                    autoHide: true
+                })
+                return
+            }
 
-  return (
-    <View>
-      <Header navigation={navigation} title="Settings" />
-      <ScrollView>
-        <View style={[styles.cardContainer, {height: 200}]}>
-          <Card>
-            <View style={styles.innerPPcardContainer}>
-              <View style={styles.purpleCardHeader}>
-                <Text style={[styles.boldText, {color: 'white'}]}>
-                  Profile Picture
-                </Text>
-              </View>
+            if(errorMessage) {
+                showMessage({
+                    message: errorMessage,
+                    type: 'warning',
+                    autoHide: true
+                })
+                return
+            }
 
-              <View style={styles.profilePicContainer}>
-                <Image
-                  source={{
-                    uri:
-                      'data:image/jpeg;base64,' +
-                      backendData.getUserDetail().profilePic,
-                  }}
-                  style={styles.profilePic}
-                />
-                <View style={styles.profilePicChangeButton}>
-                  <Button
-                    bgColor="#F4511E"
-                    text="Change"
-                    textColor="black"
-                    onPress={setNewProfilePicHandler}
-                  />
+            firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
+                ...backendData.getUserDetail(),
+                profilePic: base64,
+            })
+            .then(() => {
+                showMessage({
+                message: "Profile picture successfully changed",
+                type: 'success',
+                hideOnPress: true
+                })
+    
+                //update the local data
+                backendData.setUserDetail({
+                ...backendData.getUserDetail(),
+                profilePic: base64
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+                showMessage({
+                    message: error,
+                    type: 'success',
+                    hideOnPress: true
+                })
+            })
+        })
+    }
+
+    
+    const setNewPasswordHandler = () => {
+        firebase.auth().currentUser.updatePassword(password)
+            .then(() => {
+                showMessage({
+                    message: "Password successfully changed",
+                    type: 'success',
+                    hideOnPress: true
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    return (
+        <View>
+            <Header navigation={navigation} title="Settings"/>
+            <ScrollView>
+                <View style={[styles.cardContainer, {height: 200}]}>
+                    <Card>
+                        <View style={styles.innerPPcardContainer}>
+                            <View style={styles.purpleCardHeader}>
+                                <Text style={[styles.boldText, {color: 'white'}]}>Profile Picture</Text>
+                            </View>
+                            
+                            <View style={styles.profilePicContainer}>
+                                <Image  source={{uri: 'data:image/jpeg;base64,' + backendData.getUserDetail().profilePic}}
+                                        style={styles.profilePic}
+                                />
+                                <View style={styles.profilePicChangeButton}>
+                                    <Button bgColor= '#F4511E' text="Change" textColor="black" onPress={setNewProfilePicHandler}/>
+                                </View>
+                            </View>
+                        </View>
+                    </Card>
                 </View>
-              </View>
-            </View>
-          </Card>
-        </View>
 
-        <View style={[styles.cardContainer, {height: 250}]}>
-          <Card>
-            <View style={styles.orangeCardHeader}>
-              <Text style={styles.boldText}>Name</Text>
-            </View>
-            <View style={styles.innerCardContainer}>
-              <Text style={styles.boldText}>Enter new name</Text>
-              <View style={styles.textInputContainer}>
-                <TextInput
-                  value={name}
-                  setValue={setName}
-                  placeholder="Enter your new name"
-                />
-              </View>
-              <View style={styles.changeButtonContainer}>
-                <View style={styles.changeButton}>
-                  <Button
-                    bgColor="#6200EE"
-                    text="change"
-                    textColor="white"
-                    onPress={setNewNameHandler}
-                  />
+                <View style={[styles.cardContainer, {height: 250}]}>
+                    <Card>
+                        <View style={styles.orangeCardHeader}>
+                            <Text style={styles.boldText}>Name</Text>
+                        </View>
+                        <View style={styles.innerCardContainer}>
+                            <Text style={styles.boldText}>Enter new name</Text>
+                            <View style={styles.textInputContainer}>
+                                <TextInput
+                                    value={name}
+                                    setValue={setName}
+                                    placeholder="Enter your new name" />
+                            </View>
+                            <View style={styles.changeButtonContainer}>
+                                <View style={styles.changeButton}>
+                                    <Button bgColor= '#6200EE' text="change" textColor='white' onPress={setNewNameHandler}/>
+                                </View>
+                            </View>
+                        </View>
+                    </Card>
                 </View>
-              </View>
-            </View>
-          </Card>
-        </View>
 
-        <View style={[styles.cardContainer, {height: 250, marginBottom: 100}]}>
-          <Card>
-            <View style={styles.purpleCardHeader}>
-              <Text style={[styles.boldText, {color: 'white'}]}>Password</Text>
-            </View>
-            <View style={styles.innerCardContainer}>
-              <Text style={styles.boldText}>Enter new password</Text>
-              <View style={styles.textInputContainer}>
-                <TextInput
-                  value={password}
-                  setValue={setPassword}
-                  placeholder="Enter your new password"
-                  isPassword
-                />
-              </View>
-              <View style={styles.changeButtonContainer}>
-                <View style={styles.changeButton}>
-                  <Button
-                    bgColor="#F4511E"
-                    text="change"
-                    onPress={setNewPasswordHandler}
-                  />
+                <View style={[styles.cardContainer, {height: 250, marginBottom: 100}]}>
+                    <Card>
+                        <View style={styles.purpleCardHeader}>
+                            <Text style={[styles.boldText, {color: 'white'}]}>Password</Text>
+                        </View>
+                        <View style={styles.innerCardContainer}>
+                            <Text style={styles.boldText}>Enter new password</Text>
+                            <View style={styles.textInputContainer}>
+                                <TextInput
+                                    value={password}
+                                    setValue={setPassword}
+                                    placeholder="Enter your new password"
+                                    isPassword />
+                            </View>
+                            <View style={styles.changeButtonContainer}>
+                                <View style={styles.changeButton}>
+                                    <Button bgColor= '#F4511E' text='change' onPress={setNewPasswordHandler}/>
+                                </View>
+                            </View>
+                        </View>
+                    </Card>
                 </View>
-              </View>
-            </View>
-          </Card>
+            </ScrollView>
         </View>
-      </ScrollView>
-    </View>
-  );
+    )
 };
 
 const styles = StyleSheet.create({
