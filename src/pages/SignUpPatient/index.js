@@ -161,7 +161,7 @@ const SignUpPatient = ({navigation}) => {
                         </View>
 
                         <View style={{width: 150, marginTop: 5}}>
-                            <Button bgColor='#6200EE' text="Login" textColor='white' onPress={submitHandler}/>
+                            <Button bgColor='#6200EE' text="Register" textColor='white' onPress={submitHandler}/>
                         </View>
                     </View>
                 </Card>
