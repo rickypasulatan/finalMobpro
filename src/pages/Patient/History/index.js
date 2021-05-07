@@ -27,14 +27,19 @@ const History = ({navigation}) => {
                                             <Text style={styles.headText}> {backendData.getAppointments()[0].hospitalName}</Text>
                                             <View style={styles.bodyText}> 
                                                 <Text>{backendData.getAppointments()[0].address}</Text>
-                                                <Text>Doctor : {backendData.getAppointments()[0].doctorName}</Text>
+                                                {
+                                                    backendData.getAppointments()[0].doctorName ?
+                                                    <Text>Doctor : {backendData.getAppointments()[0].doctorName}</Text>
+                                                    :
+                                                    <Text>Waiting for hospital to approve</Text>
+                                                }
                                             </View>
                                             
                                         </View>
                                         <View>
                                             <Text style={styles.headText}> Complaint:</Text>
                                             <View style={styles.bodyText}>
-                                                <Text>{backendData.getAppointments()[0].complaint}</Text>
+                                                <Text>{backendData.getAppointments()[0].complaint.length > 85 ? backendData.getAppointments()[0].complaint.substring(0, 84) + '...' : backendData.getAppointments()[0].complaint}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -53,7 +58,7 @@ const History = ({navigation}) => {
                         </View>
                         <ScrollView style={{flex: 1, backgroundColor: '#E0E0E0', margin: 15, padding: 5, borderRadius: 25}}>
                             {
-                                backendData.getAppointments().map((el, idx) =>
+                                backendData.getAppointments() != undefined && backendData.getAppointments().map((el, idx) =>
                                     <View style={{overflow: 'hidden', borderRadius: 25, marginBottom: 10}}>
                                         <Card>
                                             <View style={{padding: 15}}>

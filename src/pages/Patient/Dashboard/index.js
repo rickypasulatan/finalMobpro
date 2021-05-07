@@ -237,7 +237,7 @@ const Dashboard = ({navigation}) => {
                   }
 
                   <Text style={{fontWeight: 'bold', marginTop: 25, fontSize: 16}}>Complaint : </Text>
-                  <Text style={{fontSize: 16}}>{currentAppointments[0].complaint}</Text>
+                  <Text style={{fontSize: 16}}>{currentAppointments[0].complaint.length > 85 ? currentAppointments[0].complaint.substring(0, 84) + '...' : currentAppointments[0].complaint}</Text>
                 </View>
               </View>
             </Card>
