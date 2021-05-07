@@ -56,6 +56,8 @@ const SignUpPatient = ({navigation}) => {
                                 type: 'success',
                                 hideOnPress: true
                             })
+
+                            navigation.replace("SignIn")
                         })
                         .catch(error => {
                             console.log(error)
