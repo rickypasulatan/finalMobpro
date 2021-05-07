@@ -192,7 +192,7 @@ const Dashboard = ({navigation}) => {
                     {backendData.getUserDetail().name}
                   </Text>
 
-                  <Text style={styles.UIcurrentLocationText}>{currentLocation}</Text>
+                  <Text style={styles.UIcurrentLocationText}>{currentLocation != undefined && currentLocation.length > 25 ? currentLocation.substring(0, 24) + '...' : currentLocation}</Text>
                 </View>
               </View>
             </View>
