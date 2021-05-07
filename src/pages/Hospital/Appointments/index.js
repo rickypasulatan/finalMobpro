@@ -207,30 +207,95 @@ const Appointments = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    flex1: {flex: 1},
-    hospitalInfoCardContainer: {height: 190, padding: 15},
-    hospitalInfoHeader: {height: 50, backgroundColor: '#6200EE', justifyContent: 'center', paddingLeft: 15},
-    hospitalInfoHeaderText: {fontWeight: 'bold', fontSize: 18, color: 'white'},
-    profilePicContainer: {flexDirection: 'row', padding: 10},
+    flex1: {
+        flex: 1
+    },
+    hospitalInfoCardContainer: {
+        height: 190, 
+        padding: 15
+    },
+    hospitalInfoHeader: {
+        height: 50, 
+        backgroundColor: '#6200EE', 
+        justifyContent: 'center', 
+        paddingLeft: 15
+    },
+    hospitalInfoHeaderText: {
+        fontWeight: 'bold', 
+        fontSize: 18, 
+        color: 'white'
+    },
+    profilePicContainer: {
+        flexDirection: 'row', 
+        padding: 10
+    },
     profilePic: {
         width: 80, 
         height: 80,
         borderRadius: 999
     },
-    hospitalInfoDetailContainer: {flex: 1, justifyContent: 'center', paddingHorizontal: 15},
-    hospitalInfoDetailNameText: {fontWeight: 'bold'},
-    currentAppointmentsCardContainer: {flex: 1, margin: 15},
-    innerCurrentAppointmentsCardContainer: {flex: 1},
-    CAheader: {backgroundColor: '#F4511E', height: 50, justifyContent: 'center', paddingHorizontal: 25},
-    CAheaderText: {fontWeight: 'bold', fontSize: 18},
-    CAcontentContainer: {flex: 1, padding: 25},
-    CAscrollView: {flex: 1, backgroundColor: '#EBEBEB', borderRadius: 25, padding: 15},
-    appointmentCardContainer: {borderRadius: 25, overflow: 'hidden', marginBottom: 25},
-    innerAppointmentCardContainer: {flexDirection: 'row', padding: 20},
-    boldText: {fontWeight: 'bold'},
-    innerModalCardContainer: {padding: 20, flex: 1},
-    modalTitleText: {fontWeight: 'bold', alignSelf: 'center', marginBottom: 25},
-    complaintTextBox: {flex: 1, backgroundColor: '#EBEBEB', borderRadius: 25, padding: 10},
+    hospitalInfoDetailContainer: {
+        flex: 1, 
+        justifyContent: 'center', 
+        paddingHorizontal: 15
+    },
+    hospitalInfoDetailNameText: {
+        fontWeight: 'bold'
+    },
+    currentAppointmentsCardContainer: {
+        flex: 1, 
+        margin: 15
+    },
+    innerCurrentAppointmentsCardContainer: {
+        flex: 1
+    },
+    CAheader: {
+        backgroundColor: '#F4511E', 
+        height: 50, 
+        justifyContent: 'center', 
+        paddingHorizontal: 25
+    },
+    CAheaderText: {
+        fontWeight: 'bold', 
+        fontSize: 18
+    },
+    CAcontentContainer: {
+        flex: 1, 
+        padding: 25
+    },
+    CAscrollView: {
+        flex: 1, 
+        backgroundColor: '#EBEBEB', 
+        borderRadius: 25, 
+        padding: 15
+    },
+    appointmentCardContainer: {
+        borderRadius: 25, 
+        overflow: 'hidden', 
+        marginBottom: 25
+    },
+    innerAppointmentCardContainer: {
+        flexDirection: 'row', 
+        padding: 20
+    },
+    boldText: {
+        fontWeight: 'bold'
+    },
+    innerModalCardContainer: {
+        padding: 20, 
+        flex: 1
+    },
+    modalTitleText: {
+        fontWeight: 'bold', 
+        alignSelf: 'center', 
+        marginBottom: 25
+    },
+    complaintTextBox: {
+        flex: 1, 
+        backgroundColor: '#EBEBEB', 
+        borderRadius: 25, 
+        padding: 10
+    },
 
 })
 
