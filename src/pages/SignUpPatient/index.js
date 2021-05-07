@@ -178,21 +178,53 @@ const SignUpPatient = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    container: {backgroundColor: '#F4511E', width: '100%'},
-    contentContainerStyle: {alignItems: 'center'},
-    healthWellLogo: {transform: [{scale: 0.5}]},
-    cardContainer: {height: 480, width: 350, marginBottom: 50},
-    innerCardContainer: {alignItems: 'center', paddingHorizontal: 20, paddingTop: 25},
-    registerPatientText: {fontWeight: 'bold', marginBottom: 5},
-    profilePictureContainer: {backgroundColor: '#F0F0F0', width: 70, height: 70, borderRadius: 999, alignItems: 'center', justifyContent: 'center', overflow: 'hidden'},
-    profilePicture: {width: 70, height: 70},
-    registerButton: {width: 150, marginTop: 5},
+    container: {
+        backgroundColor: '#F4511E', 
+        width: '100%'
+    },
+    contentContainerStyle: {
+        alignItems: 'center',
+    },
+    healthWellLogo: {
+        transform: [{scale: 0.5}],
+    },
+    cardContainer: {
+        height: 480, 
+        width: 350, 
+        marginBottom: 50,
+    },
+    innerCardContainer: {
+        alignItems: 'center', 
+        paddingHorizontal: 20, 
+        paddingTop: 25,
+    },
+    registerPatientText: {
+        fontWeight: 'bold',
+         marginBottom: 5,
+    },
+    profilePictureContainer: {
+        backgroundColor: '#F0F0F0', 
+        width: 70, 
+        height: 70, 
+        borderRadius: 999, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        overflow: 'hidden',
+    },
+    profilePicture: {
+        width: 70, 
+        height: 70,
+    },
+    registerButton: {
+        width: 150, 
+        marginTop: 5,
+    },
     labelText: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     textInputGroup: {
         paddingVertical: 9,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     }
 })
 
