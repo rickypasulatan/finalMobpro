@@ -138,18 +138,38 @@ const SignUpHospital = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    container: {backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'},
-    healthWellLogo: {transform: [{scale: 0.5}]},
-    cardContainer: {height: 380, width: 350},
-    innerCardContainer: {alignItems: 'center', paddingHorizontal: 20, paddingTop: 37},
-    registerHospitalText: {fontWeight: 'bold', marginBottom: 25},
-    registerButton: {width: 150, marginTop: 20},
+    container: {
+        backgroundColor: '#F4511E', 
+        width: '100%', 
+        height: '100%', 
+        alignItems: 'center',
+    },
+    healthWellLogo: {
+        transform: [{scale: 0.5}]
+    },
+    cardContainer: {
+        height: 380, 
+        width: 350,
+    },
+    innerCardContainer: {
+        alignItems: 'center', 
+        paddingHorizontal: 20, 
+        paddingTop: 37,
+    },
+    registerHospitalText: {
+        fontWeight: 'bold', 
+        marginBottom: 25,
+    },
+    registerButton: {
+        width: 150, 
+        marginTop: 20,
+    },
     labelText: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     textInputGroup: {
         paddingVertical: 9,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     }
 })
 
