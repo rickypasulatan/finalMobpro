@@ -89,12 +89,12 @@ const SignUpHospital = ({navigation}) => {
     }
 
     return (
-        <View style={{backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'}}>
-            <Image source={require('../../assets/healthwell.png')} style={{transform: [{scale: 0.5}]}}/>
-            <View style={{height: 380, width: 350}}>
+        <View style={styles.container}>
+            <Image source={require('../../assets/healthwell.png')} style={styles.healthWellLogo}/>
+            <View style={styles.cardContainer}>
                 <Card>
-                    <View style={{alignItems: 'center', paddingHorizontal: 20, paddingTop: 37}}>
-                        <Text style={{fontWeight: 'bold', marginBottom: 25}}> Register Hospital </Text>
+                    <View style={styles.innerCardContainer}>
+                        <Text style={styles.registerHospitalText}> Register Hospital </Text>
                         
                         <View style={styles.textInputGroup}>
                             <Text style={styles.labelText}> Name </Text>
@@ -127,7 +127,7 @@ const SignUpHospital = ({navigation}) => {
                             />
                         </View>
 
-                        <View style={{width: 150, marginTop: 20}}>
+                        <View style={styles.registerButton}>
                             <Button bgColor='#6200EE' text="Register" textColor='white' onPress={submitHandler}/>
                         </View>
                     </View>
@@ -138,6 +138,12 @@ const SignUpHospital = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    container: {backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'},
+    healthWellLogo: {transform: [{scale: 0.5}]},
+    cardContainer: {height: 380, width: 350},
+    innerCardContainer: {alignItems: 'center', paddingHorizontal: 20, paddingTop: 37},
+    registerHospitalText: {fontWeight: 'bold', marginBottom: 25},
+    registerButton: {width: 150, marginTop: 20},
     labelText: {
         fontWeight: 'bold'
     },

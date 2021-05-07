@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import { Button, Card, TextInput } from '../../../components/atoms'
 import { Header } from '../../../components/molecules'
 import firebase from '../../../config/firebase'
@@ -51,28 +51,29 @@ const Appointments = ({navigation}) => {
         <View style={{flex: 1}}>
             <Header navigation={navigation} title="Appointments" />
             
-            <View style={{flex: 1, margin: 15}}>
+            <View style={styles.currentAppointmentsCardContainer}>
                 <Card>
-                    <View style={{flex: 1}}>
-                        <View style={{backgroundColor: '#F4511E', height: 50, justifyContent: 'center', paddingHorizontal: 25}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 18}}>Current Appointments</Text>
+                    <View style={styles.innerCurrentAppointmentsCardContainer}>
+                        <View style={styles.CAheader}>
+                            <Text style={styles.CAheaderText}>Current Appointments</Text>
                         </View>
 
-                        <View style={{flex: 1, padding: 25}}>
-                            <ScrollView style={{flex: 1, backgroundColor: '#EBEBEB', borderRadius: 25, padding: 15}}>
+                        <View style={styles.CAcontentContainer}>
+                            <ScrollView style={styles.CAscrollView}>
                                 {
                                     appointments.map((el, idx) =>
-                                        el.status != "completed" && <View key={idx} style={{borderRadius: 25, overflow: 'hidden', marginBottom: 25}}>
+                                        el.status != "completed" && 
+                                        <View key={idx} style={styles.appointmentCardContainer}>
                                             <Card>
-                                                <View style={{flexDirection: 'row', padding: 20}}>
-                                                    <View style={{flex: 1}}>
-                                                        <Text style={{fontWeight: 'bold'}}>Doctor</Text>
+                                                <View style={styles.innerAppointmentCardContainer}>
+                                                    <View style={styles.flex1}>
+                                                        <Text style={styles.boldText}>Doctor</Text>
                                                         <Text>{el.doctorName ? el.doctorName : "Unassigned"}</Text>
-                                                        <Text style={{fontWeight: 'bold', marginTop: 15}}>Patient</Text>
+                                                        <Text style={[styles.boldText, {marginTop: 15}]}>Patient</Text>
                                                         <Text>{el.patientName}</Text>
                                                     </View>
                                                     <View>
-                                                        <Text style={{flex: 1}}>{el.date}</Text>
+                                                        <Text style={styles.flex1}>{el.date}</Text>
                                                         <Button     bgColor="#6200EE" 
                                                                     textColor="white" 
                                                                     text={el.status == "awaiting" ? "Approve" : "Done"}
@@ -134,15 +135,15 @@ const Appointments = ({navigation}) => {
             </View>
 
             <Modal isVisible={isModalVisible}>
-                <View style={{flex: 1}}>
+                <View style={styles.flex1}>
                     <Card>
-                        <View style={{padding: 20, flex: 1}}>
-                            <Text style={{fontWeight: 'bold', alignSelf: 'center', marginBottom: 25}}> Appointment Details </Text>
-                            <Text style={{fontWeight: 'bold'}}> Patient Name </Text>
+                        <View style={styles.innerModalCardContainer}>
+                            <Text style={styles.modalTitleText}> Appointment Details </Text>
+                            <Text style={styles.boldText}> Patient Name </Text>
                             <Text style={{marginBottom: 25}}> {currentSelectedAppointment.patientName}</Text>
-                            <Text style={{fontWeight: 'bold'}}> Complaint </Text>
-                            <Text style={{flex: 1, backgroundColor: '#EBEBEB', borderRadius: 25, padding: 10}}> {currentSelectedAppointment.complaint} </Text>
-                            <Text style={{marginTop: 16, fontWeight: 'bold'}}> Assign Doctor </Text>
+                            <Text style={styles.boldText}> Complaint </Text>
+                            <Text style={styles.complaintTextBox}> {currentSelectedAppointment.complaint} </Text>
+                            <Text style={[{marginTop: 16}, styles.boldText]}> Assign Doctor </Text>
                             <TextInput  placeholder="Enter doctor name here"
                                         value={assignedDoctor}
                                         setValue={setAssignedDoctor}
@@ -204,5 +205,33 @@ const Appointments = ({navigation}) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    flex1: {flex: 1},
+    hospitalInfoCardContainer: {height: 190, padding: 15},
+    hospitalInfoHeader: {height: 50, backgroundColor: '#6200EE', justifyContent: 'center', paddingLeft: 15},
+    hospitalInfoHeaderText: {fontWeight: 'bold', fontSize: 18, color: 'white'},
+    profilePicContainer: {flexDirection: 'row', padding: 10},
+    profilePic: {
+        width: 80, 
+        height: 80,
+        borderRadius: 999
+    },
+    hospitalInfoDetailContainer: {flex: 1, justifyContent: 'center', paddingHorizontal: 15},
+    hospitalInfoDetailNameText: {fontWeight: 'bold'},
+    currentAppointmentsCardContainer: {flex: 1, margin: 15},
+    innerCurrentAppointmentsCardContainer: {flex: 1},
+    CAheader: {backgroundColor: '#F4511E', height: 50, justifyContent: 'center', paddingHorizontal: 25},
+    CAheaderText: {fontWeight: 'bold', fontSize: 18},
+    CAcontentContainer: {flex: 1, padding: 25},
+    CAscrollView: {flex: 1, backgroundColor: '#EBEBEB', borderRadius: 25, padding: 15},
+    appointmentCardContainer: {borderRadius: 25, overflow: 'hidden', marginBottom: 25},
+    innerAppointmentCardContainer: {flexDirection: 'row', padding: 20},
+    boldText: {fontWeight: 'bold'},
+    innerModalCardContainer: {padding: 20, flex: 1},
+    modalTitleText: {fontWeight: 'bold', alignSelf: 'center', marginBottom: 25},
+    complaintTextBox: {flex: 1, backgroundColor: '#EBEBEB', borderRadius: 25, padding: 10},
+
+})
 
 export default Appointments

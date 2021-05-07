@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react'
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, StyleSheet } from 'react-native'
 import { Header } from '../../../components/molecules'
 import {Card, Button} from '../../../components/atoms'
 import {TextInput} from '../../../components/atoms'
@@ -113,23 +113,19 @@ const Settings = ({navigation}) => {
     return (
         <View>
             <Header navigation={navigation} title="Settings"/>
-            <ScrollView style={{width: '100%'}}>
-                <View style={{height: 200, paddingHorizontal: 15, paddingTop: 25}}>
+            <ScrollView>
+                <View style={[styles.cardContainer, {height: 200}]}>
                     <Card>
-                        <View style={{flex: 1}}>
-                            <View style={{backgroundColor: '#6200EE', height: 50, justifyContent: 'center', paddingLeft: 15}}>
-                                <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>Profile Picture</Text>
+                        <View style={styles.innerPPcardContainer}>
+                            <View style={styles.purpleCardHeader}>
+                                <Text style={[styles.boldText, {color: 'white'}]}>Profile Picture</Text>
                             </View>
                             
-                            <View style={{flexDirection: 'row', flex: 1, alignItems: 'center', paddingHorizontal: 15}}>
+                            <View style={styles.profilePicContainer}>
                                 <Image  source={{uri: 'data:image/jpeg;base64,' + backendData.getUserDetail().profilePic}}
-                                        style={{
-                                            width: 70,
-                                            height: 70,
-                                            borderRadius: 999,
-                                        }}
+                                        style={styles.profilePic}
                                 />
-                                <View style={{flex: 1, paddingHorizontal: 15}}>
+                                <View style={styles.profilePicChangeButton}>
                                     <Button bgColor= '#F4511E' text="Change" textColor="black" onPress={setNewProfilePicHandler}/>
                                 </View>
                             </View>
@@ -137,21 +133,21 @@ const Settings = ({navigation}) => {
                     </Card>
                 </View>
 
-                <View style={{height: 250, paddingHorizontal: 20, paddingTop: 30}}>
+                <View style={[styles.cardContainer, {height: 250}]}>
                     <Card>
-                        <View style={{backgroundColor: '#F4511E', height: 50, justifyContent: 'center', paddingLeft: 15}}>
-                            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Name</Text>
+                        <View style={styles.orangeCardHeader}>
+                            <Text style={styles.boldText}>Name</Text>
                         </View>
-                        <View style={{padding: 15}}>
-                            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Enter new name</Text>
-                            <View style={{marginTop: 20}}>
+                        <View style={styles.innerCardContainer}>
+                            <Text style={styles.boldText}>Enter new name</Text>
+                            <View style={styles.textInputContainer}>
                                 <TextInput
                                     value={name}
                                     setValue={setName}
                                     placeholder="Enter your new name" />
                             </View>
-                            <View style={{paddingLeft: 15}}>
-                                <View style={{marginTop: 20, paddingHorizontal: 80}}>
+                            <View style={styles.changeButtonContainer}>
+                                <View style={styles.changeButton}>
                                     <Button bgColor= '#6200EE' text="change" textColor='white' onPress={setNewNameHandler}/>
                                 </View>
                             </View>
@@ -159,22 +155,22 @@ const Settings = ({navigation}) => {
                     </Card>
                 </View>
 
-                <View style={{height: 250, paddingHorizontal: 20, paddingTop: 30, marginBottom: 100}}>
+                <View style={[styles.cardContainer, {height: 250, marginBottom: 100}]}>
                     <Card>
-                        <View style={{backgroundColor: '#6200EE', height: 50, justifyContent: 'center', paddingLeft: 15}}>
-                            <Text style={{fontsize: 18, fontWeight:'bold', color: 'white'}}>Password</Text>
+                        <View style={styles.purpleCardHeader}>
+                            <Text style={[styles.boldText, {color: 'white'}]}>Password</Text>
                         </View>
-                        <View style={{padding: 15}}>
-                            <Text style={{fontsize: 18, fontWeight: 'bold'}}>Enter new password</Text>
-                            <View style={{marginTop: 20}}>
+                        <View style={styles.innerCardContainer}>
+                            <Text style={styles.boldText}>Enter new password</Text>
+                            <View style={styles.textInputContainer}>
                                 <TextInput
                                     value={password}
                                     setValue={setPassword}
                                     placeholder="Enter your new password"
                                     isPassword />
                             </View>
-                            <View style={{paddingLeft: 15}}>
-                                <View style={{marginTop: 20, paddingHorizontal: 80}}>
+                            <View style={styles.changeButtonContainer}>
+                                <View style={styles.changeButton}>
                                     <Button bgColor= '#F4511E' text='change' onPress={setNewPasswordHandler}/>
                                 </View>
                             </View>
@@ -186,7 +182,22 @@ const Settings = ({navigation}) => {
     )
 };
 
-
-
-
+const styles = StyleSheet.create({
+    cardContainer: {paddingHorizontal: 15, paddingTop: 25},
+    innerPPcardContainer: {flex: 1},
+    purpleCardHeader: {backgroundColor: '#6200EE', height: 50, justifyContent: 'center', paddingLeft: 15},
+    orangeCardHeader: {backgroundColor: '#F4511E', height: 50, justifyContent: 'center', paddingLeft: 15},
+    boldText: {fontSize: 18, fontWeight: 'bold'},
+    profilePicContainer: {flexDirection: 'row', flex: 1, alignItems: 'center', paddingHorizontal: 15},
+    profilePic: {
+        width: 70,
+        height: 70,
+        borderRadius: 999,
+    },
+    profilePicChangeButton: {flex: 1, paddingHorizontal: 15},
+    innerCardContainer: {padding: 15},
+    textInputContainer: {marginTop: 20},
+    changeButtonContainer: {paddingLeft: 15},
+    changeButton: {marginTop: 20, paddingHorizontal: 80},
+})
 export default Settings
