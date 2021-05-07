@@ -20,14 +20,6 @@ const Dashboard = ({navigation}) => {
   const [currentLocation, setCurrentLocation] = useState('')
   const backendData = useContext(BackendDataContext)
 
-  const patientName = 'Ben Dover';
-  const patientAddress = 'Airmadidi, North Sulawesi';
-  const hospitalName = 'RS Unklab';
-  const hospitalAddress = 'Airmadidi, North Sulawesi, 95695';
-  const doctor = 'Dr. Anodaly Thesaurus';
-  const pfp = '../../../assets/Ben.png';
-  //const complainttex = 'I feel headache after eating a food fr...';
-
   const fetchCurrentAppointments = () => {
     firebase.database()
       .ref('appointments')
@@ -42,6 +34,18 @@ const Dashboard = ({navigation}) => {
           for(let i=0; i<keys.length; i++) {
             data.push(retrievedData[keys[i]])
           }
+
+          data.sort((firstEl, secondEl) => {
+            if(moment(firstEl.date, 'DD-MM-YYYY HH:mm:ss').isBefore(moment(secondEl.date, 'DD-MM-YYYY HH:mm:ss')))
+              return 1
+            
+            if(moment(firstEl.date, 'DD-MM-YYYY HH:mm:ss').isAfter(moment(secondEl.date, 'DD-MM-YYYY HH:mm:ss')))
+              return -1
+            
+            return 0
+          })
+
+          console.log(data)
 
           firebase.database()
             .ref('pengguna')
@@ -82,6 +86,7 @@ const Dashboard = ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', fetchCurrentAppointments)
+    fetchCurrentAppointments()
 
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
@@ -201,7 +206,7 @@ const Dashboard = ({navigation}) => {
           </Card>
         </View>
         {
-          currentAppointments.length > 0 ?
+          currentAppointments.length > 0 && currentAppointments[0].status != 'completed' ?
           <View style={{height: 270, paddingHorizontal: 15, paddingTop: 25, marginBottom: 100}}>
             <Card>
               <View>
@@ -222,8 +227,8 @@ const Dashboard = ({navigation}) => {
                   <Text style={{fontWeight: 'bold', fontSize: 16}}>{currentAppointments[0].hospitalName}</Text>
                   <Text style={{fontSize: 16}}>{currentAppointments[0].address}</Text>
                   {
-                    currentAppointments[0].doctor ?
-                    <Text style={{fontSize: 16}}>{currentAppointments[0].doctor}</Text>
+                    currentAppointments[0].doctorName ?
+                    <Text style={{fontSize: 16}}>{currentAppointments[0].doctorName}</Text>
                     :
                     <Text style={{fontSize: 16}}>Waiting for hospital to approve</Text>
                   }
