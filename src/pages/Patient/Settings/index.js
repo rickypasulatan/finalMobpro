@@ -263,6 +263,9 @@ const styles = StyleSheet.create({
   changeButtonContainer: {
     paddingLeft: 15,
   },
-  changeButton: {marginTop: 20, paddingHorizontal: 80},
+  changeButton: {
+    marginTop: 20,
+    paddingHorizontal: 80,
+  },
 });
 export default Settings;
