@@ -326,36 +326,79 @@ const Dashboard = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  userInfoCardContainer: {height: 200, paddingHorizontal: 15, paddingTop: 25},
+  userInfoCardContainer: {
+    height: 200, 
+    paddingHorizontal: 15, 
+    paddingTop: 25
+  },
   userInfoCardHeader: {
     backgroundColor: '#6200EE',
     height: 50,
     justifyContent: 'center',
     paddingLeft: 15,
   },
-  boldText: {fontSize: 18, fontWeight: 'bold'},
-  UICardContent: {flexDirection: 'row'},
-  UIinnerContentContainer: {padding: 10},
+  boldText: {
+    fontSize: 18, 
+    fontWeight: 'bold'
+  },
+  UICardContent: {
+    flexDirection: 'row'
+  },
+  UIinnerContentContainer: {
+    padding: 10
+  },
   UIprofilePic: {
     width: 100,
     height: 100,
     borderRadius: 150,
   },
-  UIrightDetailContainer: {padding: 5, alignContent: 'center', paddingTop: 35},
-  UIcurrentLocationText: {fontSize: 16, width: 200},
-  CAgreyCardContainer: {height: 400, paddingHorizontal: 15, paddingTop: 25, marginBottom: 150},
+  UIrightDetailContainer: {
+    padding: 5, 
+    alignContent: 'center', 
+    paddingTop: 35
+  },
+  UIcurrentLocationText: {
+    fontSize: 16, 
+    width: 200
+  },
+  CAgreyCardContainer: {
+    height: 400, 
+    paddingHorizontal: 15, 
+    paddingTop: 25, 
+    marginBottom: 150
+  },
   CAgreyCardHeader: {
     backgroundColor: '#838383',
     height: 50,
     justifyContent: 'center',
     paddingLeft: 15,
   },
-  CAgreyCardContent: {padding:30, paddingTop: 80, paddingHorizontal: 80,alignItems:'center'},
-  noAppointmentText: {fontSize: 18, color: '#838383', textAlign:'center'},
-  createAppointmentButton: {padding:70, paddingHorizontal:60},
-  creAppModalContainer: {flex: 1},
-  creAppModalInnerContainer: {padding: 20},
-  modalTitle: {alignSelf: 'center', fontWeight: 'bold', marginBottom: 25},
+  CAgreyCardContent: {
+    padding:30, 
+    paddingTop: 80, 
+    paddingHorizontal: 80,
+    alignItems:'center'
+  },
+  noAppointmentText: {
+    fontSize: 18, 
+    color: '#838383', 
+    textAlign:'center'
+  },
+  createAppointmentButton: {
+    padding:70, 
+    paddingHorizontal:60
+  },
+  creAppModalContainer: {
+    flex: 1
+  },
+  creAppModalInnerContainer: {
+    padding: 20
+  },
+  modalTitle: {
+    alignSelf: 'center', 
+    fontWeight: 'bold', 
+    marginBottom: 25
+  },
   availHospListContainer: {
     height: 400, 
     backgroundColor: '#E5E5E5', 
@@ -366,10 +409,19 @@ const styles = StyleSheet.create({
   hospCardContainer: {
     height:90
   },
-  hospCardInnerContainer: {padding: 25, flexDirection: 'row'},
-  hospCardLeftTextContainer: {flex: 1},
-  hospCardRightTextContainer: {justifyContent: 'center'},
-  refreshListButton: {height: 15},
+  hospCardInnerContainer: {
+    padding: 25, 
+    flexDirection: 'row'
+  },
+  hospCardLeftTextContainer: {
+    flex: 1
+  },
+  hospCardRightTextContainer: {
+    justifyContent: 'center'
+  },
+  refreshListButton: {
+    height: 15
+  },
   complaintTextInput: {
     backgroundColor: '#E5E5E5',
     borderRadius: 25,
@@ -378,15 +430,24 @@ const styles = StyleSheet.create({
     padding: 25,
     marginBottom: 25,
   },
-  CAcardContainer: {height: 270, paddingHorizontal: 15, paddingTop: 25, marginBottom: 100},
+  CAcardContainer: {
+    height: 270, 
+    paddingHorizontal: 15, 
+    paddingTop: 25, 
+    marginBottom: 100
+  },
   CAcardHeader: {
     backgroundColor: '#F5411E',
     height: 50,
     justifyContent: 'center',
     paddingLeft: 15,
   },
-  text: {fontSize: 16},
-  CAcontentContainer: {padding: 15},
+  text: {
+    fontSize: 16
+  },
+  CAcontentContainer: {
+    padding: 15
+  },
 
 })
 
