@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 import {Button, Card} from '../../components/atoms';
-import TextInput from '../../components/atoms/TextInput';
 import {Picker} from '@react-native-picker/picker';
 
 const SignUp = ({navigation}) => {
