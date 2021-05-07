@@ -1,83 +1,75 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { Header } from '../../../components/molecules'
 import { Card, Button } from '../../../components/atoms'
+import BackendDataContext from '../../../contexts/backendDataContext'
 
 const History = ({navigation}) => {
-
-    const hospital = "RS Unklab"
-    const address = "Airmadidi, North Sulawesi, 95695";
-    const doctor = "Dr. Anodaly Thesaurus";
-    const complaint = "I feel headache after eating a fo..."
-
-    const date = "7 April 2021"
+    const backendData = useContext(BackendDataContext)
+    const [appointments, setAppointments] = useState([])
+    console.log(backendData.getAppointments())
 
     return (
-        <View>
+        <ScrollView>
             <Header navigation={navigation} title="History"/>
-                <View>
-                    <View style={{width: '100%', height: '100%'}}>
-                        <View style={{marginBottom: 20}}>
-                            <View style={styles.cardCA}>
-                                <Card>
-                                    <View>
-                                        <View style={styles.headerCard}>
-                                            <Text style={styles.headerTextCard}>Current Appointment</Text>
-                                        </View>
-                                        <View style={styles.bodyCard}>
-                                            <View>
-                                                <Text style={styles.headText}> {hospital}</Text>
-                                                <View style={styles.bodyText}> 
-                                                    <Text>{address}</Text>
-                                                    <Text>Doctor : {doctor}</Text>
-                                                </View>
-                                                
+            <View style={{width: '100%', height: '100%'}}>
+                <View style={{marginBottom: 20}}>
+                    {
+                        backendData.getAppointments() != undefined && backendData.getAppointments().length > 0 && backendData.getAppointments()[0].status != 'completed' ?
+                        <View style={styles.cardCA}>
+                            <Card>
+                                <View>
+                                    <View style={styles.headerCard}>
+                                        <Text style={styles.headerTextCard}>Current Appointment</Text>
+                                    </View>
+                                    <View style={styles.bodyCard}>
+                                        <View>
+                                            <Text style={styles.headText}> {backendData.getAppointments()[0].hospitalName}</Text>
+                                            <View style={styles.bodyText}> 
+                                                <Text>{backendData.getAppointments()[0].address}</Text>
+                                                <Text>Doctor : {backendData.getAppointments()[0].doctorName}</Text>
                                             </View>
-                                            <View>
-                                                <Text style={styles.headText}> Complaint:</Text>
-                                                <View style={styles.bodyText}>
-                                                    <Text>{complaint}</Text>
-                                                </View>
+                                            
+                                        </View>
+                                        <View>
+                                            <Text style={styles.headText}> Complaint:</Text>
+                                            <View style={styles.bodyText}>
+                                                <Text>{backendData.getAppointments()[0].complaint}</Text>
                                             </View>
                                         </View>
                                     </View>
-                                </Card>
-                            </View>
-                        </View>
-                        
-                        <ScrollView>
-                            <View>
-                                <View style={styles.cardPA}>
-                                    <Card>
-                                        <View >
-                                            <View style={styles.headerCardHistory}>
-                                                <Text style={styles.headerTextCard}>Past Appointment</Text>
-                                            </View>
-                                        </View>
-                                        <View>
-                                            <View style={styles.cardWrapper}>
-                                                <Card>
-                                                    <View style={styles.backgroundCardWrapper}>
-                                                        <View style={styles.contentCard}>
-                                                            <Card> 
-                                                                <View style={styles.historyCard}>
-                                                                    <Text style={styles.headText}>{hospital}</Text>
-                                                                    <Text>{doctor}</Text>
-                                                                    <Text>{date}</Text>
-                                                                </View>
-                                                            </Card>
-                                                        </View> 
-                                                    </View>                   
-                                                </Card>
-                                            </View>
-                                        </View>
-                                    </Card>
                                 </View>
-                            </View>    
-                        </ScrollView>
-                    </View>
+                            </Card>
+                        </View>
+                        :
+                        <View></View>
+                    }
                 </View>
-        </View>
+                
+                <View style={styles.cardPA}>
+                    <Card>
+                        <View style={styles.headerCardHistory}>
+                            <Text style={styles.headerTextCard}>Past Appointment</Text>
+                        </View>
+                        <ScrollView style={{flex: 1, backgroundColor: '#E0E0E0', margin: 15, padding: 5, borderRadius: 25}}>
+                            {
+                                backendData.getAppointments().map((el, idx) =>
+                                    <View style={{overflow: 'hidden', borderRadius: 25, marginBottom: 10}}>
+                                        <Card>
+                                            <View style={{padding: 15}}>
+                                                <Text>{el.hospitalName}</Text>
+                                                <Text>Doctor - {el.doctorName}</Text>
+                                                <Text>{el.date}</Text>
+                                            </View>
+                                        </Card>
+                                    </View>
+                                )
+                            }
+                        </ScrollView>
+                    </Card>
+                </View>
+            </View>
+        </ScrollView>
     )
 }
 
@@ -85,23 +77,20 @@ export default History
 
 const styles = StyleSheet.create({
     cardCA : { //Current Appointment
-        height: 220, 
+        height: 240, 
         paddingHorizontal: 15, 
         paddingTop: 25,
     },
     cardPA:{ //Past Appointment
-        height: '100%', 
+        height: 400, 
         paddingHorizontal: 15, 
         paddingTop: 10,
+        marginBottom: 45,
     },
     cardWrapper:{
-        height: 500, 
+        flex: 1, 
         paddingHorizontal: 20, 
         paddingTop: 20,  
-    },
-    backgroundCardWrapper: {
-        backgroundColor: '#E0E0E0', 
-        height: '100%',
     },
     contentCard:{
         height: 120, 
@@ -109,6 +98,7 @@ const styles = StyleSheet.create({
         paddingTop:20,
     },
     historyCard:{
+        backgroundColor: '#E0E0E0',
         paddingTop:10, 
         paddingHorizontal: 10,
     },
@@ -127,7 +117,7 @@ const styles = StyleSheet.create({
     headerTextCard: {
         fontSize: 18, 
         fontWeight: 'bold', 
-        color: 'black',
+        color: 'white',
     },
     bodyCard: {
         padding: 15,
