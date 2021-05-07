@@ -337,7 +337,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 15,
   },
-  boldText: {fontSize: 18, fontWeight: 'bold'},
+  boldText: {
+    fontSize: 18, 
+    fontWeight: 'bold'
+  },
   UICardContent: {flexDirection: 'row'},
   UIinnerContentContainer: {padding: 10},
   UIprofilePic: {
