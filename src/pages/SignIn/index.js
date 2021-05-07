@@ -107,7 +107,9 @@ const SignIn = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  healthWellLogo: {transform: [{scale: 0.5}]},
+  healthWellLogo: {
+    transform: [{scale: 0.5}],
+  },
   container: {
     backgroundColor: '#F4511E',
     width: '100%',
