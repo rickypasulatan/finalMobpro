@@ -8,6 +8,7 @@ import uuid from 'react-native-uuid'
 import BackendDataContext from '../../../contexts/backendDataContext';
 import moment from 'moment'
 import {showMessage, hideMessage} from 'react-native-flash-message'
+import GetLocation from 'react-native-get-location'
 
 const Dashboard = ({navigation}) => {
   const [availableHospital, setAvailableHospital] = useState([])
@@ -16,6 +17,7 @@ const Dashboard = ({navigation}) => {
   const [currentAppointments, setCurrentAppointments] = useState([])
   const [currentModalPage, setCurrentModalPage] = useState(0)
   const [complaint, setComplaint] = useState('')
+  const [currentLocation, setCurrentLocation] = useState('')
   const backendData = useContext(BackendDataContext)
 
   const patientName = 'Ben Dover';
@@ -80,6 +82,23 @@ const Dashboard = ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', fetchCurrentAppointments)
+
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+    .then(location => {
+      const {latitude, longitude} = location
+
+      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+        .then(resp => resp.json())
+        .then(datajson => {
+          setCurrentLocation(datajson.display_name)
+        })
+        .catch(error => {
+          console.log("couldn't get current location")
+        })
+    })
 
     return unsubscribe
   }, [navigation])
@@ -161,7 +180,7 @@ const Dashboard = ({navigation}) => {
               <View style={{flexDirection: 'row'}}>
                 <View style={{padding: 10}}>
                   <Image
-                    source={require(pfp)}
+                    source={{uri : 'data:image/jpeg;base64,' + backendData.getUserDetail().profilePic}}
                     style={{
                       width: 100,
                       height: 100,
@@ -172,10 +191,10 @@ const Dashboard = ({navigation}) => {
                 <View
                   style={{padding: 5, alignContent: 'center', paddingTop: 35}}>
                   <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                    {patientName}
+                    {backendData.getUserDetail().name}
                   </Text>
 
-                  <Text style={{fontSize: 16}}>{patientAddress}</Text>
+                  <Text style={{fontSize: 16, width: 200}}>{currentLocation}</Text>
                 </View>
               </View>
             </View>

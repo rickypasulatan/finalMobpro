@@ -1,12 +1,14 @@
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { View, Text, TouchableNativeFeedback, SafeAreaView, TouchableOpacity, Image } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button } from '../../atoms';
 import firebase from '../../../config/firebase'
+import BackendDataContext from '../../../contexts/backendDataContext';
 
 const Drawer = (props) => {
     const routes = props.routes;
+    const backendData = useContext(BackendDataContext)
 
     const signOutHandler = () => {
         firebase.auth().signOut()
@@ -29,10 +31,12 @@ const Drawer = (props) => {
                 </View>
                 <View style={{height: 180, paddingTop: 15, alignItems: 'center'}}>
                     <View style={{width: 100, height: 100, borderRadius: 999, overflow: 'hidden', backgroundColor: 'white'}}>
-                        {/* Taru foto profil disini */}
+                        <Image  source={{uri: 'data:image/jpeg;base64,'+backendData.getUserDetail().profilePic}}
+                                style={{width: 100, height: 100}}
+                        />
                     </View>
                     <Text style={{color: 'grey'}}>Profile</Text>
-                    <Text style={{fontSize: 20}}>Nama disini</Text>
+                    <Text style={{fontSize: 20}}>{backendData.getUserDetail().name}</Text>
                 </View>
                 <View style={{flex: 1, alignItems: 'center'}}>
                     {
