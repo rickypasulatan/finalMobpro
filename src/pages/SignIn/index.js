@@ -116,16 +116,30 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
   },
-  cardContainer: {height: 350, width: 350},
+  cardContainer: {
+    height: 350,
+    width: 350,
+  },
   innerCardContainer: {
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 37,
   },
-  loginText: {fontWeight: 'bold', marginBottom: 25},
-  loginButton: {width: 150, marginTop: 45},
-  signUpTextContainer: {paddingTop: 15},
-  signUpText: {color: 'grey', fontSize: 12},
+  loginText: {
+    fontWeight: 'bold',
+    marginBottom: 25,
+  },
+  loginButton: {
+    width: 150,
+    marginTop: 45,
+  },
+  signUpTextContainer: {
+    paddingTop: 15,
+  },
+  signUpText: {
+    color: 'grey',
+    fontSize: 12,
+  },
   labelText: {
     fontWeight: 'bold',
   },
