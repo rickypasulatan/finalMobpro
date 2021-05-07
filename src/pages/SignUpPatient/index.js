@@ -112,16 +112,16 @@ const SignUpPatient = ({navigation}) => {
     }
 
     return (
-        <ScrollView style={{backgroundColor: '#F4511E', width: '100%'}} contentContainerStyle={{alignItems: 'center'}}>
-            <Image source={require('../../assets/healthwell.png')} style={{transform: [{scale: 0.5}]}}/>
-            <View style={{height: 480, width: 350, marginBottom: 50}}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
+            <Image source={require('../../assets/healthwell.png')} style={styles.healthWellLogo}/>
+            <View style={styles.cardContainer}>
                 <Card>
-                    <View style={{alignItems: 'center', paddingHorizontal: 20, paddingTop: 25}}>
-                        <Text style={{fontWeight: 'bold', marginBottom: 5}}> Register Patient </Text>
+                    <View style={styles.innerCardContainer}>
+                        <Text style={styles.registerPatientText}> Register Patient </Text>
                         
                         <TouchableOpacity onPress={addPhotoHandler}>
-                            <View style={{backgroundColor: '#F0F0F0', width: 70, height: 70, borderRadius: 999, alignItems: 'center', justifyContent: 'center', overflow: 'hidden'}}>
-                                {profilePicB64 ? <Image source={{uri: `data:image/jpeg;base64,${profilePicB64}`}} style={{width: 70, height: 70}}/> : <Text>Add photo</Text>}
+                            <View style={styles.profilePictureContainer}>
+                                {profilePicB64 ? <Image source={{uri: `data:image/jpeg;base64,${profilePicB64}`}} style={styles.profilePicture}/> : <Text>Add photo</Text>}
                             </View>
                         </TouchableOpacity>
 
@@ -167,7 +167,7 @@ const SignUpPatient = ({navigation}) => {
                             />
                         </View>
 
-                        <View style={{width: 150, marginTop: 5}}>
+                        <View style={styles.registerButton}>
                             <Button bgColor='#6200EE' text="Register" textColor='white' onPress={submitHandler}/>
                         </View>
                     </View>
@@ -178,6 +178,15 @@ const SignUpPatient = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    container: {backgroundColor: '#F4511E', width: '100%'},
+    contentContainerStyle: {alignItems: 'center'},
+    healthWellLogo: {transform: [{scale: 0.5}]},
+    cardContainer: {height: 480, width: 350, marginBottom: 50},
+    innerCardContainer: {alignItems: 'center', paddingHorizontal: 20, paddingTop: 25},
+    registerPatientText: {fontWeight: 'bold', marginBottom: 5},
+    profilePictureContainer: {backgroundColor: '#F0F0F0', width: 70, height: 70, borderRadius: 999, alignItems: 'center', justifyContent: 'center', overflow: 'hidden'},
+    profilePicture: {width: 70, height: 70},
+    registerButton: {width: 150, marginTop: 5},
     labelText: {
         fontWeight: 'bold'
     },

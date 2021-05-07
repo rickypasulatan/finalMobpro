@@ -8,16 +8,16 @@ const SignUp = ({navigation}) => {
     const [selectedValue, setSelectedValue] = useState('patient')
 
     return (
-        <View style={{backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'}}>
-            <Image source={require('../../assets/healthwell.png')} style={{transform: [{scale: 0.5}]}}/>
-            <View style={{height: 230, width: 350}}>
+        <View style={styles.container}>
+            <Image source={require('../../assets/healthwell.png')} style={styles.healthWellLogo}/>
+            <View style={styles.cardContainer}>
                 <Card>
-                    <View style={{alignItems: 'center', paddingHorizontal: 20, paddingTop: 37}}>
-                        <Text style={{fontWeight: 'bold', marginBottom: 25}}> User Type </Text>
+                    <View style={styles.innerCardContainer}>
+                        <Text style={styles.userTypeText}> User Type </Text>
                         
                         <View style={styles.textInputGroup}>
                             <Text style={styles.labelText}> Register As </Text>
-                            <View style={{backgroundColor: '#F3F3F3', borderRadius: 15}}>
+                            <View style={styles.pickerSection}>
                                 <Picker selectedValue={selectedValue}
                                         onValueChange={(itemValue, itemIndex) => {
                                             setSelectedValue(itemValue)
@@ -29,7 +29,7 @@ const SignUp = ({navigation}) => {
                             </View>
                         </View>
 
-                        <View style={{width: 150}}>
+                        <View style={styles.nextButton}>
                             <Button     bgColor='#6200EE' 
                                         text="Next" 
                                         textColor='white'
@@ -49,6 +49,13 @@ const SignUp = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    healthWellLogo: {transform: [{scale: 0.5}]},
+    container: {backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'},
+    cardContainer: {height: 230, width: 350},
+    innerCardContainer: {alignItems: 'center', paddingHorizontal: 20, paddingTop: 37},
+    userTypeText: {fontWeight: 'bold', marginBottom: 25},
+    pickerSection: {backgroundColor: '#F3F3F3', borderRadius: 15},
+    nextButton: {width: 150},
     labelText: {
         fontWeight: 'bold'
     },

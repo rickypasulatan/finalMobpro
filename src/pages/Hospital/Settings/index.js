@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {Header} from '../../../components/molecules';
 import {Card, Button} from '../../../components/atoms';
 import {TextInput} from '../../../components/atoms';
@@ -92,33 +92,26 @@ const Settings = ({navigation}) => {
   return (
     <View>
       <Header navigation={navigation} title="Settings" />
-      <ScrollView style={{width: '100%'}}>
-
-        
-        <View style={{height: 250, paddingHorizontal: 25, paddingTop: 30}}>
+      <ScrollView style={styles.container}>
+        <View style={styles.innerContainer}>
           <Card>
             <View>
               <View
-                style={{
-                  backgroundColor: '#F4511E',
-                  height: 50,
-                  justifyContent: 'center',
-                  paddingLeft: 15,
-                }}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Name</Text>
+                style={styles.orangeCardHeaderContainer}>
+                <Text style={styles.boldText}>Name</Text>
               </View>
-              <View style={{padding: 15}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+              <View style={styles.cardContentContainer}>
+                <Text style={styles.boldText}>
                   Enter new name
                 </Text>
-                <View style={{marginTop: 20}}>
+                <View style={styles.textInputContainer}>
                   <TextInput
                     value={name}
                     setValue={setName}
                     placeholder="Enter your hospital name"
                   />
                 </View>
-                <View style={{marginTop: 20, paddingHorizontal: 80}}>
+                <View style={styles.changeButton}>
                   <Button bgColor="#6200EE" text="Change" textColor="white" onPress={setNewNameHandler}/>
                 </View>
               </View>
@@ -127,26 +120,21 @@ const Settings = ({navigation}) => {
         </View>
 
 
-        <View style={{height: 250, paddingHorizontal: 25, paddingTop: 30}}>
+        <View style={styles.innerContainer}>
           <Card>
             <View>
               <View
-                style={{
-                  backgroundColor: '#6200EE',
-                  height: 50,
-                  justifyContent: 'center',
-                  paddingLeft: 15,
-                }}>
+                style={styles.purpleCardHeaderContainer}>
                 <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
+                  style={[styles.boldText, {color: 'white'}]}>
                   Password
                 </Text>
               </View>
-              <View style={{padding: 15}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+              <View style={styles.cardContentContainer}>
+                <Text style={styles.boldText}>
                   Enter new password
                 </Text>
-                <View style={{marginTop: 20}}>
+                <View style={styles.textInputContainer}>
                   <TextInput
                     value={password}
                     setValue={setPassword}
@@ -154,7 +142,7 @@ const Settings = ({navigation}) => {
                     isPassword
                   />
                 </View>
-                <View style={{marginVertical: 20, paddingHorizontal: 80}}>
+                <View style={styles.changeButton}>
                   <Button bgColor="#F4511E" text="Change" textColor="black" onPress={setNewPasswordHandler}/>
                 </View>
               </View>
@@ -163,33 +151,28 @@ const Settings = ({navigation}) => {
         </View>
 
 
-        <View style={{height: 250, paddingHorizontal: 25, paddingTop: 30, marginBottom: 150}}>
+        <View style={[styles.innerContainer, {marginBottom: 150}]}>
           <Card>
             <View>
               <View
-                style={{
-                  backgroundColor: '#F4511E',
-                  height: 50,
-                  justifyContent: 'center',
-                  paddingLeft: 15,
-                }}>
+                style={styles.orangeCardHeaderContainer}>
                 <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                  style={[styles.boldText, {color: 'black'}]}>
                   Room Capacity
                 </Text>
               </View>
-              <View style={{padding: 15}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+              <View style={styles.cardContentContainer}>
+                <Text style={styles.boldText}>
                   Enter new room capacity
                 </Text>
-                <View style={{marginTop: 20}}>
+                <View style={styles.textInputContainer}>
                   <TextInput
                     value={roomCapacity}
                     setValue={setRoomCapacity}
                     placeholder="Enter your hospital's room capacity"
                   />
                 </View>
-                <View style={{marginVertical: 20, paddingHorizontal: 80}}>
+                <View style={styles.changeButton}>
                   <Button bgColor="#F4511E" text="Change" textColor="black" onPress={setNewRoomCapacityHandler}/>
                 </View>
               </View>
@@ -202,5 +185,26 @@ const Settings = ({navigation}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {width: '100%'},
+  innerContainer: {height: 250, paddingHorizontal: 25, paddingTop: 30},
+  orangeCardHeaderContainer: {
+    backgroundColor: '#F4511E',
+    height: 50,
+    justifyContent: 'center',
+    paddingLeft: 15,
+  },
+  purpleCardHeaderContainer: {
+    backgroundColor: '#6200EE',
+    height: 50,
+    justifyContent: 'center',
+    paddingLeft: 15,
+  },
+  boldText: {fontSize: 18, fontWeight: 'bold'},
+  cardContentContainer: {padding: 15},
+  textInputContainer: {marginTop: 20},
+  changeButton: {marginTop: 20, paddingHorizontal: 80},
+})
 
 export default Settings;

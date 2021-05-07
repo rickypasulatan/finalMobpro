@@ -48,12 +48,12 @@ const SignIn = ({navigation}) => {
     }
 
     return (
-        <View style={{backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'}}>
-            <Image source={require('../../assets/healthwell.png')} style={{transform: [{scale: 0.5}]}}/>
-            <View style={{height: 350, width: 350}}>
+        <View style={styles.container}>
+            <Image source={require('../../assets/healthwell.png')} style={styles.healthWellLogo}/>
+            <View style={styles.cardContainer}>
                 <Card>
-                    <View style={{alignItems: 'center', paddingHorizontal: 20, paddingTop: 37}}>
-                        <Text style={{fontWeight: 'bold', marginBottom: 25}}> Login </Text>
+                    <View style={styles.innerCardContainer}>
+                        <Text style={styles.loginText}> Login </Text>
                         
                         <View style={styles.textInputGroup}>
                             <Text style={styles.labelText}> Email </Text>
@@ -74,11 +74,11 @@ const SignIn = ({navigation}) => {
                             />
                         </View>
 
-                        <View style={{width: 150, marginTop: 45}}>
+                        <View style={styles.loginButton}>
                             <Button bgColor='#6200EE' text="Login" textColor='white' onPress={submitHandler}/>
                         </View>
-                        <TouchableOpacity style={{paddingTop: 15}} onPress={() => navigation.navigate("SignUp")}>
-                            <Text style={{color: 'grey', fontSize: 12}}>Don't have an account?</Text>
+                        <TouchableOpacity style={styles.signUpTextContainer} onPress={() => navigation.navigate("SignUp")}>
+                            <Text style={styles.signUpText}>Don't have an account?</Text>
                         </TouchableOpacity> 
                     </View>
                 </Card>
@@ -88,6 +88,14 @@ const SignIn = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    healthWellLogo: {transform: [{scale: 0.5}]},
+    container: {backgroundColor: '#F4511E', width: '100%', height: '100%', alignItems: 'center'},
+    cardContainer: {height: 350, width: 350},
+    innerCardContainer: {alignItems: 'center', paddingHorizontal: 20, paddingTop: 37},
+    loginText: {fontWeight: 'bold', marginBottom: 25},
+    loginButton: {width: 150, marginTop: 45},
+    signUpTextContainer: {paddingTop: 15},
+    signUpText: {color: 'grey', fontSize: 12},
     labelText: {
         fontWeight: 'bold'
     },

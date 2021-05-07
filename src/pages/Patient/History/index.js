@@ -12,8 +12,8 @@ const History = ({navigation}) => {
     return (
         <ScrollView>
             <Header navigation={navigation} title="History"/>
-            <View style={{width: '100%', height: '100%'}}>
-                <View style={{marginBottom: 20}}>
+            <View style={styles.container}>
+                <View style={styles.CAcardContainer}>
                     {
                         backendData.getAppointments() != undefined && backendData.getAppointments().length > 0 && backendData.getAppointments()[0].status != 'completed' ?
                         <View style={styles.cardCA}>
@@ -27,14 +27,19 @@ const History = ({navigation}) => {
                                             <Text style={styles.headText}> {backendData.getAppointments()[0].hospitalName}</Text>
                                             <View style={styles.bodyText}> 
                                                 <Text>{backendData.getAppointments()[0].address}</Text>
-                                                <Text>Doctor : {backendData.getAppointments()[0].doctorName}</Text>
+                                                {
+                                                    backendData.getAppointments()[0].doctorName ?
+                                                    <Text>Doctor : {backendData.getAppointments()[0].doctorName}</Text>
+                                                    :
+                                                    <Text>Waiting for hospital to approve</Text>
+                                                }
                                             </View>
                                             
                                         </View>
                                         <View>
                                             <Text style={styles.headText}> Complaint:</Text>
                                             <View style={styles.bodyText}>
-                                                <Text>{backendData.getAppointments()[0].complaint}</Text>
+                                                <Text>{backendData.getAppointments()[0].complaint.length > 85 ? backendData.getAppointments()[0].complaint.substring(0, 84) + '...' : backendData.getAppointments()[0].complaint}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -51,12 +56,12 @@ const History = ({navigation}) => {
                         <View style={styles.headerCardHistory}>
                             <Text style={styles.headerTextCard}>Past Appointment</Text>
                         </View>
-                        <ScrollView style={{flex: 1, backgroundColor: '#E0E0E0', margin: 15, padding: 5, borderRadius: 25}}>
+                        <ScrollView style={styles.PAscrollViewContainer} nestedScrollEnabled={true}>
                             {
-                                backendData.getAppointments().map((el, idx) =>
-                                    <View style={{overflow: 'hidden', borderRadius: 25, marginBottom: 10}}>
+                                backendData.getAppointments() != undefined && backendData.getAppointments().map((el, idx) =>
+                                    <View style={styles.appointmentsCardContainer}>
                                         <Card>
-                                            <View style={{padding: 15}}>
+                                            <View style={styles.appointmentsCardInnerContainer}>
                                                 <Text>{el.hospitalName}</Text>
                                                 <Text>Doctor - {el.doctorName}</Text>
                                                 <Text>{el.date}</Text>
@@ -76,6 +81,11 @@ const History = ({navigation}) => {
 export default History
 
 const styles = StyleSheet.create({
+    container: {width: '100%', height: '100%'},
+    CAcardContainer: {marginBottom: 20},
+    PAscrollViewContainer: {flex: 1, backgroundColor: '#E0E0E0', margin: 15, padding: 5, borderRadius: 25},
+    appointmentsCardContainer: {overflow: 'hidden', borderRadius: 25, marginBottom: 10},
+    appointmentsCardInnerContainer: {padding: 15},
     cardCA : { //Current Appointment
         height: 240, 
         paddingHorizontal: 15, 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {View, Text, Image, ScrollView, TouchableOpacity, TextInput as NativeTextInput} from 'react-native';
+import {View, Text, Image, ScrollView, TouchableOpacity, TextInput as NativeTextInput, StyleSheet} from 'react-native';
 import {Button, Card, TextInput} from '../../../components/atoms';
 import {Header} from '../../../components/molecules';
 import Modal from 'react-native-modal'
@@ -170,39 +170,29 @@ const Dashboard = ({navigation}) => {
     <View>
       <Header navigation={navigation} title="Dashboard" />
       <ScrollView>
-        <View style={{height: 200, paddingHorizontal: 15, paddingTop: 25}}>
+        <View style={styles.userInfoCardContainer}>
           <Card>
             <View>
               <View
-                style={{
-                  backgroundColor: '#6200EE',
-                  height: 50,
-                  justifyContent: 'center',
-                  paddingLeft: 15,
-                }}>
+                style={styles.userInfoCardHeader}>
                 <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
+                  style={[styles.boldText, {color: 'white'}]}>
                   User Info
                 </Text>
               </View>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{padding: 10}}>
+              <View style={styles.UICardContent}>
+                <View style={styles.UIinnerContentContainer}>
                   <Image
                     source={{uri : 'data:image/jpeg;base64,' + backendData.getUserDetail().profilePic}}
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 150,
-                    }}
+                    style={styles.UIprofilePic}
                   />
                 </View>
-                <View
-                  style={{padding: 5, alignContent: 'center', paddingTop: 35}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                <View style={styles.UIrightDetailContainer}>
+                  <Text style={styles.boldText}>
                     {backendData.getUserDetail().name}
                   </Text>
 
-                  <Text style={{fontSize: 16, width: 200}}>{currentLocation}</Text>
+                  <Text style={styles.UIcurrentLocationText}>{currentLocation}</Text>
                 </View>
               </View>
             </View>
@@ -210,62 +200,52 @@ const Dashboard = ({navigation}) => {
         </View>
         {
           currentAppointments.length > 0 && currentAppointments[0].status != 'completed' ?
-          <View style={{height: 270, paddingHorizontal: 15, paddingTop: 25, marginBottom: 100}}>
+          <View style={styles.CAcardContainer}>
             <Card>
               <View>
                 <View
-                  style={{
-                    backgroundColor: '#F5411E',
-                    height: 50,
-                    justifyContent: 'center',
-                    paddingLeft: 15,
-                  }}>
+                  style={styles.CAcardHeader}>
                   <Text
-                    style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                    style={[styles.boldText, {color: 'black'}]}>
                     Current Appointment
                   </Text>
                 </View>
 
-                <View style={{padding: 15}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 16}}>{currentAppointments[0].hospitalName}</Text>
-                  <Text style={{fontSize: 16}}>{currentAppointments[0].address}</Text>
+                <View style={styles.CAcontentContainer}>
+                  <Text style={styles.boldText}>{currentAppointments[0].hospitalName}</Text>
+                  <Text style={styles.text}>{currentAppointments[0].address}</Text>
                   {
                     currentAppointments[0].doctorName ?
-                    <Text style={{fontSize: 16}}>{currentAppointments[0].doctorName}</Text>
+                    <Text style={styles.text}>{currentAppointments[0].doctorName}</Text>
                     :
-                    <Text style={{fontSize: 16}}>Waiting for hospital to approve</Text>
+                    <Text style={styles.text}>Waiting for hospital to approve</Text>
                   }
 
-                  <Text style={{fontWeight: 'bold', marginTop: 25, fontSize: 16}}>Complaint : </Text>
-                  <Text style={{fontSize: 16}}>{currentAppointments[0].complaint}</Text>
+                  <Text style={[styles.boldText, {marginTop: 25}]}>Complaint : </Text>
+                  <Text style={styles.text}>{currentAppointments[0].complaint.length > 85 ? currentAppointments[0].complaint.substring(0, 84) + '...' : currentAppointments[0].complaint}</Text>
                 </View>
               </View>
             </Card>
           </View>
           :
-          <View style={{height: 400, paddingHorizontal: 15, paddingTop: 25, marginBottom: 150}}>
+          <View style={styles.CAgreyCardContainer}>
             <Card>
               <View>
                 <View
-                  style={{
-                    backgroundColor: '#838383',
-                    height: 50,
-                    justifyContent: 'center',
-                    paddingLeft: 15,
-                  }}>
+                  style={styles.CAgreyCardHeader}>
                   <Text
-                    style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
+                    style={[styles.boldText, {color: 'white'}]}>
                     Current Appointment
                   </Text>
                 </View>
 
-                <View style={{flexDirection:'column'}}>
-                  <View style={{padding:30, paddingTop: 80, paddingHorizontal: 80,alignItems:'center'}}>
-                    <Text style={{fontSize: 18, color: '#838383', textAlign:'center'}}>
+                <View>
+                  <View style={styles.CAgreyCardContent}>
+                    <Text style={styles.noAppointmentText}>
                       There are currently no appointment
                     </Text>
                   </View>
-                  <View style={{padding:70, paddingHorizontal:60}}>
+                  <View style={styles.createAppointmentButton}>
                     <Button
                       bgColor="#F4511E"
                       text="Create Appointment"
@@ -281,28 +261,20 @@ const Dashboard = ({navigation}) => {
       </ScrollView>
 
       <Modal isVisible={isCreateAppointmentModalVisible}>
-        <View style={{flex: 1}}>
+        <View style={styles.creAppModalContainer}>
           <Card>
-            <View style={{padding: 20}}>
+            <View style={styles.creAppModalInnerContainer}>
               {
                 currentModalPage === 0 &&
                 <View>
-                  <Text style={{alignSelf: 'center', fontWeight: 'bold', marginBottom: 25}}> Create new appointment </Text>
+                  <Text style={styles.modalTitle}> Create new appointment </Text>
                   
-                  <ScrollView style={{
-                    height: 400, 
-                    backgroundColor: '#E5E5E5', 
-                    borderRadius: 25, 
-                    overflow: 'hidden',
-                    padding: 5
-                  }}>
+                  <ScrollView style={styles.availHospListContainer}>
                     {
                       availableHospital.map((el, idx) => 
                         <View key={idx} style={{overflow: 'hidden', borderRadius: 25}}>
                           <TouchableOpacity
-                            style={{
-                              height:90
-                            }}
+                            style={styles.hospCardContainer}
                             activeOpacity={0.9}
                             onPress={() => {
                               setSelectedAvailableHospital(el)
@@ -310,12 +282,12 @@ const Dashboard = ({navigation}) => {
                             }}
                           >
                             <Card>
-                              <View style={{padding: 25, flexDirection: 'row'}}>
-                                <View style={{flex: 1}}>
+                              <View style={styles.hospCardInnerContainer}>
+                                <View style={styles.hospCardLeftTextContainer}>
                                   <Text style={{fontWeight: '700'}}>{el.name}</Text>
                                   <Text style={{color: 'grey'}}>{el.email}</Text>
                                 </View>
-                                <View style={{justifyContent: 'center'}}>
+                                <View style={styles.hospCardRightTextContainer}>
                                   <Text>Capacity - {el.roomCapacity}</Text>
                                 </View>
                               </View>
@@ -325,25 +297,18 @@ const Dashboard = ({navigation}) => {
                       )
                     }
                   </ScrollView>
-                  <View style={{height: 15}}/>
+                  <View style={styles.refreshListButton}/>
                   <Button text="Refresh List" bgColor='#6200EE' textColor='white' onPress={getAvailableHospitalListHandler}/>
                 </View>
               }
               {
                 currentModalPage === 1 &&
                 <View>
-                  <Text style={{alignSelf: 'center', fontWeight: 'bold', marginBottom: 25}}> Create new appointment </Text>
+                  <Text style={styles.modalTitle}> Create new appointment </Text>
 
                   <Text>Enter your complaint</Text>
                   <NativeTextInput
-                    style={{
-                      backgroundColor: '#E5E5E5',
-                      borderRadius: 25,
-                      marginTop: 25,
-                      textAlignVertical: 'top',
-                      padding: 25,
-                      marginBottom: 25,
-                    }}
+                    style={styles.complaintTextInput}
                     multiline
                     numberOfLines={10}
                     value={complaint}
@@ -359,5 +324,70 @@ const Dashboard = ({navigation}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  userInfoCardContainer: {height: 200, paddingHorizontal: 15, paddingTop: 25},
+  userInfoCardHeader: {
+    backgroundColor: '#6200EE',
+    height: 50,
+    justifyContent: 'center',
+    paddingLeft: 15,
+  },
+  boldText: {fontSize: 18, fontWeight: 'bold'},
+  UICardContent: {flexDirection: 'row'},
+  UIinnerContentContainer: {padding: 10},
+  UIprofilePic: {
+    width: 100,
+    height: 100,
+    borderRadius: 150,
+  },
+  UIrightDetailContainer: {padding: 5, alignContent: 'center', paddingTop: 35},
+  UIcurrentLocationText: {fontSize: 16, width: 200},
+  CAgreyCardContainer: {height: 400, paddingHorizontal: 15, paddingTop: 25, marginBottom: 150},
+  CAgreyCardHeader: {
+    backgroundColor: '#838383',
+    height: 50,
+    justifyContent: 'center',
+    paddingLeft: 15,
+  },
+  CAgreyCardContent: {padding:30, paddingTop: 80, paddingHorizontal: 80,alignItems:'center'},
+  noAppointmentText: {fontSize: 18, color: '#838383', textAlign:'center'},
+  createAppointmentButton: {padding:70, paddingHorizontal:60},
+  creAppModalContainer: {flex: 1},
+  creAppModalInnerContainer: {padding: 20},
+  modalTitle: {alignSelf: 'center', fontWeight: 'bold', marginBottom: 25},
+  availHospListContainer: {
+    height: 400, 
+    backgroundColor: '#E5E5E5', 
+    borderRadius: 25, 
+    overflow: 'hidden',
+    padding: 5
+  },
+  hospCardContainer: {
+    height:90
+  },
+  hospCardInnerContainer: {padding: 25, flexDirection: 'row'},
+  hospCardLeftTextContainer: {flex: 1},
+  hospCardRightTextContainer: {justifyContent: 'center'},
+  refreshListButton: {height: 15},
+  complaintTextInput: {
+    backgroundColor: '#E5E5E5',
+    borderRadius: 25,
+    marginTop: 25,
+    textAlignVertical: 'top',
+    padding: 25,
+    marginBottom: 25,
+  },
+  CAcardContainer: {height: 270, paddingHorizontal: 15, paddingTop: 25, marginBottom: 100},
+  CAcardHeader: {
+    backgroundColor: '#F5411E',
+    height: 50,
+    justifyContent: 'center',
+    paddingLeft: 15,
+  },
+  text: {fontSize: 16},
+  CAcontentContainer: {padding: 15},
+
+})
 
 export default Dashboard;

@@ -1,26 +1,33 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 
 const Header = ({navigation, title}) => {
     return (
-        <View style={{height: 90, backgroundColor: 'white', paddingTop: 25, flexDirection: 'row', elevation: 25}}>
+        <View style={styles.headerContainer}>
             <TouchableOpacity   style={{flex: 1, flexDirection: 'row', alignItems: 'center'}} 
                                 onPress={() => navigation.openDrawer()}
             >
                 <Image  source={require('../../../assets/HAMBURGER.png')} 
-                        style={{
-                            transform: [{scale: 0.375}],
-                        }}
+                        style={styles.hamburgerIcon}
                 />
-                <Text style={{fontSize: 24, fontWeight: 'bold'}}>{title}</Text>
+                <Text style={styles.pageTitle}>{title}</Text>
             </TouchableOpacity>
             <Image  source={require('../../../assets/healthwell2.png')}
-                    style={{
-                        transform: [{scale: 0.375}, {translateX: 50}, {translateY: -77}],
-                    }}
+                    style={styles.healthWellLogo}
             />
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    headerContainer: {height: 90, backgroundColor: 'white', paddingTop: 25, flexDirection: 'row', elevation: 25},
+    hamburgerIcon: {
+        transform: [{scale: 0.375}],
+    },
+    pageTitle: {fontSize: 24, fontWeight: 'bold'},
+    healthWellLogo: {
+        transform: [{scale: 0.375}, {translateX: 50}, {translateY: -77}],
+    },
+})
 
 export default Header
