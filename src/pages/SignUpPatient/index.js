@@ -56,7 +56,12 @@ const SignUpPatient = ({navigation}) => {
                                 type: 'success',
                                 hideOnPress: true
                             })
-
+                            
+                            setName('')
+                            setEmail('')
+                            setPassword('')
+                            setPhoneNum('')
+                            setProfilePicB64('')
                             navigation.replace("SignIn")
                         })
                         .catch(error => {

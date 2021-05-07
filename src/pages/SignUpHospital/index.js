@@ -62,6 +62,9 @@ const SignUpHospital = ({navigation}) => {
                                 hideOnPress: true
                             })
 
+                            setName('')
+                            setEmail('')
+                            setPassword('')
                             navigation.replace("SignIn")
                         })
                         .catch(error => {
