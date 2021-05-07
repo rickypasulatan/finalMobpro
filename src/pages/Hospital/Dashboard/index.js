@@ -62,9 +62,8 @@ const Dashboard = ({navigation}) => {
                                         style={styles.profilePic}
                                 />
                                 <View style={styles.hospitalInfoDetailContainer}>
-                                    <Text style={styles.hospitalInfoDetailNameText}>RS Unklab</Text>
-                                    <Text>Address here</Text>
-                                    <Text>Capacity : 50</Text>
+                                    <Text style={styles.hospitalInfoDetailNameText}>{backendData.getUserDetail().name}</Text>
+                                    <Text>Capacity : {backendData.getUserDetail().roomCapacity}</Text>
                                 </View>
                             </View>
                         </View>
