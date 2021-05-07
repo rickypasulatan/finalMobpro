@@ -34,7 +34,7 @@ const Settings = ({navigation}) => {
                   />
                 </View>
                 <View style={{marginTop: 20, paddingHorizontal: 80}}>
-                  <Button bgColor="#6200EE" text="Change" textColor="white" />
+                  <Button bgColor="#6200EE" text="Change"/>
                 </View>
               </View>
             </View>
