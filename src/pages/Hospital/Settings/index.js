@@ -187,8 +187,14 @@ const Settings = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {width: '100%'},
-  innerContainer: {height: 250, paddingHorizontal: 25, paddingTop: 30},
+  container: {
+    width: '100%'
+  },
+  innerContainer: {
+    height: 250, 
+    paddingHorizontal: 25, 
+    paddingTop: 30
+  },
   orangeCardHeaderContainer: {
     backgroundColor: '#F4511E',
     height: 50,
@@ -201,10 +207,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 15,
   },
-  boldText: {fontSize: 18, fontWeight: 'bold'},
-  cardContentContainer: {padding: 15},
-  textInputContainer: {marginTop: 20},
-  changeButton: {marginTop: 20, paddingHorizontal: 80},
+  boldText: {
+    fontSize: 18, 
+    fontWeight: 'bold'
+  },
+  cardContentContainer: {
+    padding: 15
+  },
+  textInputContainer: {
+    marginTop: 20
+  },
+  changeButton: {
+    marginTop: 20, 
+    paddingHorizontal: 80
+  },
 })
 
 export default Settings;
