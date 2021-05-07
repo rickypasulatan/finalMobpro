@@ -326,7 +326,11 @@ const Dashboard = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  userInfoCardContainer: {height: 200, paddingHorizontal: 15, paddingTop: 25},
+  userInfoCardContainer: {
+    height: 200, 
+    paddingHorizontal: 15, 
+    paddingTop: 25
+  },
   userInfoCardHeader: {
     backgroundColor: '#6200EE',
     height: 50,
