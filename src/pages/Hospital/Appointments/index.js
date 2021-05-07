@@ -134,7 +134,7 @@ const Appointments = ({navigation}) => {
                 </Card>
             </View>
 
-            <Modal isVisible={isModalVisible}>
+            <Modal isVisible={isModalVisible} onBackButtonPress={() => setIsModalVisible(false)}>
                 <View style={styles.flex1}>
                     <Card>
                         <View style={styles.innerModalCardContainer}>
