@@ -67,6 +67,7 @@ const Dashboard = ({navigation}) => {
                     console.log(data)
 
                     setCurrentAppointments(data)
+                    backendData.setAppointments(data)
                   })
                   .catch(error => {
                     console.log("couldn't get location info of hospital in current appointment")
@@ -80,6 +81,7 @@ const Dashboard = ({navigation}) => {
             })
         } else {
           setCurrentAppointments([])
+          backendData.setAppointments([])
         }
       })
   }
