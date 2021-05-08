@@ -127,6 +127,8 @@ const SignUpHospital = ({navigation}) => {
                             />
                         </View>
 
+                        <Text style={styles.infoText}>The current device location will be set as the hospital's address</Text>
+
                         <View style={styles.registerButton}>
                             <Button bgColor='#6200EE' text="Register" textColor='white' onPress={submitHandler}/>
                         </View>
@@ -138,6 +140,11 @@ const SignUpHospital = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    infoText: {
+        paddingVertical: 5,
+        fontSize: 11,
+        color: 'grey'
+    },
     container: {
         backgroundColor: '#F4511E', 
         width: '100%', 
@@ -148,7 +155,7 @@ const styles = StyleSheet.create({
         transform: [{scale: 0.5}]
     },
     cardContainer: {
-        height: 380, 
+        height: 400, 
         width: 350,
     },
     innerCardContainer: {
