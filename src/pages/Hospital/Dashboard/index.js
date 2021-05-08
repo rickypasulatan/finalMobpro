@@ -41,6 +41,93 @@ const Dashboard = ({navigation}) => {
             })
     }
 
+    const approveAppointment = () => {
+        firebase.database()
+            .ref(`appointments/${currentSelectedAppointment.uid}`)
+            .set({
+                ...currentSelectedAppointment,
+                doctorName: assignedDoctor,
+                status: 'ongoing',
+            })
+            .then(() => {
+                backendData.setUserDetail({
+                    ...backendData.getUserDetail(),
+                    roomCapacity: backendData.getUserDetail().roomCapacity - 1
+                })
+                
+                firebase.database()
+                    .ref(`pengguna/${backendData.getUserDetail().uid}`)
+                    .set(backendData.getUserDetail())
+                    .then(() => {
+                        
+
+                        showMessage({
+                            message: "Appointment approved",
+                            type: 'success',
+                            hideOnPress: true
+                        })
+
+                        fetchCurrentAppointments()
+                        setAssignedDoctor('')
+                        setIsModalVisible(false)
+                    })
+                
+            })
+            .catch(error => {
+                console.log(error)
+                showMessage({
+                    message: error,
+                    type: 'danger',
+                    hideOnPress: true
+                })
+            })
+    }
+
+    const appointmentApprovalButtonHandler = el => {
+        if(el.status == "awaiting") {
+            setCurrentSelectedAppointment(el)
+
+            setIsModalVisible(true)
+        } else if(el.status == "ongoing") {
+            firebase.database()
+                .ref(`appointments/${el.uid}`)
+                .set({
+                    ...el,
+                    status: 'completed',
+                })
+                .then(() => {
+                    backendData.setUserDetail({
+                        ...backendData.getUserDetail(),
+                        roomCapacity: backendData.getUserDetail().roomCapacity + 1
+                    })
+
+                    firebase.database()
+                        .ref(`pengguna/${backendData.getUserDetail().uid}`)
+                        .set(backendData.getUserDetail())
+                        .then(() => {
+                            
+
+                            showMessage({
+                                message: "Appointment completed",
+                                type: 'success',
+                                hideOnPress: true
+                            })
+                            
+                            fetchCurrentAppointments()
+                        })
+                    
+                })
+                .catch(error => {
+                    console.log(error)
+                    showMessage({
+                        message: error,
+                        type: 'danger',
+                        hideOnPress: true
+                    })
+                })
+        }
+    }
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', fetchCurrentAppointments)
 
@@ -97,50 +184,7 @@ const Dashboard = ({navigation}) => {
                                                             <Button     bgColor="#6200EE" 
                                                                         textColor="white" 
                                                                         text={el.status == "awaiting" ? "Approve" : "Done"}
-                                                                        onPress={() => {
-                                                                            if(el.status == "awaiting") {
-                                                                                setCurrentSelectedAppointment(el)
-
-                                                                                setIsModalVisible(true)
-                                                                            } else if(el.status == "ongoing") {
-                                                                                firebase.database()
-                                                                                    .ref(`appointments/${el.uid}`)
-                                                                                    .set({
-                                                                                        ...el,
-                                                                                        status: 'completed',
-                                                                                    })
-                                                                                    .then(() => {
-                                                                                        backendData.setUserDetail({
-                                                                                            ...backendData.getUserDetail(),
-                                                                                            roomCapacity: backendData.getUserDetail().roomCapacity + 1
-                                                                                        })
-
-                                                                                        firebase.database()
-                                                                                            .ref(`pengguna/${backendData.getUserDetail().uid}`)
-                                                                                            .set(backendData.getUserDetail())
-                                                                                            .then(() => {
-                                                                                                
-
-                                                                                                showMessage({
-                                                                                                    message: "Appointment completed",
-                                                                                                    type: 'success',
-                                                                                                    hideOnPress: true
-                                                                                                })
-                                                                                                
-                                                                                                fetchCurrentAppointments()
-                                                                                            })
-                                                                                        
-                                                                                    })
-                                                                                    .catch(error => {
-                                                                                        console.log(error)
-                                                                                        showMessage({
-                                                                                            message: error,
-                                                                                            type: 'danger',
-                                                                                            hideOnPress: true
-                                                                                        })
-                                                                                    })
-                                                                            }
-                                                                        }}
+                                                                        onPress={() => appointmentApprovalButtonHandler(el)}
                                                             />
                                                         </View>
                                                     </View>
@@ -175,50 +219,7 @@ const Dashboard = ({navigation}) => {
                             <Button text="Approve"
                                     bgColor="#6200EE"
                                     textColor="white"
-                                    onPress={() => {
-                                        
-
-                                        firebase.database()
-                                            .ref(`appointments/${currentSelectedAppointment.uid}`)
-                                            .set({
-                                                ...currentSelectedAppointment,
-                                                doctorName: assignedDoctor,
-                                                status: 'ongoing',
-                                            })
-                                            .then(() => {
-                                                backendData.setUserDetail({
-                                                    ...backendData.getUserDetail(),
-                                                    roomCapacity: backendData.getUserDetail().roomCapacity - 1
-                                                })
-                                                
-                                                firebase.database()
-                                                    .ref(`pengguna/${backendData.getUserDetail().uid}`)
-                                                    .set(backendData.getUserDetail())
-                                                    .then(() => {
-                                                        
-
-                                                        showMessage({
-                                                            message: "Appointment approved",
-                                                            type: 'success',
-                                                            hideOnPress: true
-                                                        })
-
-                                                        fetchCurrentAppointments()
-                                                        setAssignedDoctor('')
-                                                        setIsModalVisible(false)
-                                                    })
-                                                
-                                            })
-                                            .catch(error => {
-                                                console.log(error)
-                                                showMessage({
-                                                    message: error,
-                                                    type: 'danger',
-                                                    hideOnPress: true
-                                                })
-                                            })
-
-                                    }}
+                                    onPress={approveAppointment}
                             />
                         </View>
                     </Card>
