@@ -59,6 +59,7 @@ const History = ({navigation}) => {
                         <ScrollView style={styles.PAscrollViewContainer} nestedScrollEnabled={true}>
                             {
                                 backendData.getAppointments() != undefined && backendData.getAppointments().map((el, idx) =>
+                                    el.status == "completed" &&
                                     <View style={styles.appointmentsCardContainer}>
                                         <Card>
                                             <View style={styles.appointmentsCardInnerContainer}>
