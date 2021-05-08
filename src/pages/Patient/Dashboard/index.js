@@ -95,7 +95,25 @@ const Dashboard = ({navigation}) => {
   }
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', fetchCurrentAppointments)
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchCurrentAppointments()
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+      })
+      .then(location => {
+        const {latitude, longitude} = location
+  
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+          .then(resp => resp.json())
+          .then(datajson => {
+            setCurrentLocation(datajson.display_name)
+          })
+          .catch(error => {
+            console.log("couldn't get current location")
+          })
+      })
+    })
     fetchCurrentAppointments()
 
     GetLocation.getCurrentPosition({
