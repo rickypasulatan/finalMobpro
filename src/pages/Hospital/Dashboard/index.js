@@ -13,6 +13,7 @@ const Dashboard = ({navigation}) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [currentSelectedAppointment, setCurrentSelectedAppointment] = useState({})
     const [assignedDoctor, setAssignedDoctor] = useState('')
+    const [hospitalLocation, setHospitalLocation] = useState('')
 
     const fetchCurrentAppointments = () => {
         firebase.database()
@@ -128,8 +129,25 @@ const Dashboard = ({navigation}) => {
         }
     }
 
+    const getHospitalLocation = () => {
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${backendData.getUserDetail().latitude}&lon=${backendData.getUserDetail().longitude}&format=json`)
+            .then(resp => resp.json())
+            .then(datajson => {
+                setHospitalLocation(datajson.display_name)
+            })
+            .catch(error => {
+                console.log("couldn't get location info of hospital in current appointment")
+            })
+    }
+
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', fetchCurrentAppointments)
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchCurrentAppointments()
+            getHospitalLocation()
+        })
+
+        fetchCurrentAppointments()
+        getHospitalLocation()
 
         return unsubscribe
     }, [navigation])
@@ -150,6 +168,7 @@ const Dashboard = ({navigation}) => {
                                 />
                                 <View style={styles.hospitalInfoDetailContainer}>
                                     <Text style={styles.hospitalInfoDetailNameText}>{backendData.getUserDetail().name}</Text>
+                                    <Text>{hospitalLocation.length > 32 ? hospitalLocation.substring(0, 31) + '...' : hospitalLocation}</Text>
                                     <Text>Capacity : {backendData.getUserDetail().roomCapacity}</Text>
                                 </View>
                             </View>
