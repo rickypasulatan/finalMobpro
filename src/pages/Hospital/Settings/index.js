@@ -6,6 +6,7 @@ import {TextInput} from '../../../components/atoms';
 import firebase from '../../../config/firebase'
 import BackendDataContext from '../../../contexts/backendDataContext';
 import {showMessage, hideMessage} from 'react-native-flash-message'
+import GetLocation from 'react-native-get-location'
 
 const Settings = ({navigation}) => {
   const [name, setName] = useState('')
@@ -31,11 +32,11 @@ const Settings = ({navigation}) => {
         name: name
       })
     })
-    .catch(() => {
+    .catch(error => {
       console.log(error)
       showMessage({
           message: error,
-          type: 'success',
+          type: 'danger',
           hideOnPress: true
       })
     })
@@ -50,11 +51,11 @@ const Settings = ({navigation}) => {
           hideOnPress: true
         })
       })
-      .catch(() => {
+      .catch(error => {
         console.log(error)
         showMessage({
             message: error,
-            type: 'success',
+            type: 'danger',
             hideOnPress: true
         })
       })
@@ -78,16 +79,51 @@ const Settings = ({navigation}) => {
         roomCapacity: parseInt(roomCapacity)
       })
     })
-    .catch(() => {
+    .catch(error => {
       console.log(error)
       showMessage({
           message: error,
-          type: 'success',
+          type: 'danger',
           hideOnPress: true
       })
     })
   }
 
+  const setNewLocationHandler = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+    .then(location => {
+      firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
+        ...backendData.getUserDetail(),
+        latitude: location.latitude,
+        longitude: location.longitude,
+      })
+      .then(() => {
+        showMessage({
+          message: "Hospital location successfully changed",
+          type: 'success',
+          hideOnPress: true
+        })
+
+        //update the local data
+        backendData.setUserDetail({
+          ...backendData.getUserDetail(),
+          latitude: location.latitude,
+          longitude: location.longitude,
+        })
+      })
+      .catch(error => {
+        console.log(error)
+        showMessage({
+          message: error,
+          type: 'danger',
+          hideOnPress: true
+        })
+      })
+    })
+  }
 
   return (
     <View>
@@ -151,7 +187,7 @@ const Settings = ({navigation}) => {
         </View>
 
 
-        <View style={[styles.innerContainer, {marginBottom: 150}]}>
+        <View style={styles.innerContainer}>
           <Card>
             <View>
               <View
@@ -173,7 +209,29 @@ const Settings = ({navigation}) => {
                   />
                 </View>
                 <View style={styles.changeButton}>
-                  <Button bgColor="#F4511E" text="Change" textColor="black" onPress={setNewRoomCapacityHandler}/>
+                  <Button bgColor="#6200EE" text="Change" textColor="white" onPress={setNewRoomCapacityHandler}/>
+                </View>
+              </View>
+            </View>
+          </Card>
+        </View>
+
+        <View style={[styles.innerContainer, {marginBottom: 150}]}>
+          <Card>
+            <View>
+              <View
+                style={styles.purpleCardHeaderContainer}>
+                <Text
+                  style={[styles.boldText, {color: 'white'}]}>
+                  Hospital Location
+                </Text>
+              </View>
+              <View style={styles.cardContentContainer}>
+                <Text style={styles.boldText}>
+                  Set hospital location from current location
+                </Text>
+                <View style={styles.changeButton}>
+                  <Button bgColor="#F4511E" text="Set Location" textColor="black" onPress={setNewLocationHandler}/>
                 </View>
               </View>
             </View>
