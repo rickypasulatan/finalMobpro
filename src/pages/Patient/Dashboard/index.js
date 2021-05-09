@@ -165,6 +165,7 @@ const Dashboard = ({navigation}) => {
   }, [navigation])
 
   const getAvailableHospitalListHandler = () => {
+    console.log('getAvailableHospitalListHander fired')
     firebase.database().ref().child('pengguna').get()
       .then(snapshot => {
         if(snapshot.exists()) {
@@ -173,24 +174,26 @@ const Dashboard = ({navigation}) => {
 
           let hospitals = []
 
-          
+          console.log("retrieved data from firebase")          
           
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
           })
           .then(location => {
+            console.log("retrieved current location")
             const {latitude, longitude} = location
-      
-            hospitals.map(el => console.log(calculateDistance(el.latitude, el.longitude, latitude, longitude)))
 
             for(let i=0; i<userIdList.length; i++) {
               if(data[userIdList[i]].type === "hospital" && 
                   data[userIdList[i]].roomCapacity > 0 &&
                   calculateDistance(data[userIdList[i]].latitude, data[userIdList[i]].longitude, latitude, longitude) <= 17) {
-                hospitals.push(data[userIdList[i]])
+                console.log(data[userIdList[i]])
+                hospitals.push({uid: userIdList[i], ...data[userIdList[i]]})
               }
             }
+
+            hospitals.map(el => console.log(calculateDistance(el.latitude, el.longitude, latitude, longitude)))
 
             setAvailableHospital(hospitals);
           })
@@ -329,7 +332,10 @@ const Dashboard = ({navigation}) => {
         }
       </ScrollView>
 
-      <Modal isVisible={isCreateAppointmentModalVisible}>
+      <Modal isVisible={isCreateAppointmentModalVisible} onBackButtonPress={() => {
+        setIsCreateAppointmentModalVisible(false)
+        setCurrentModalPage(0)
+      }}>
         <View style={styles.creAppModalContainer}>
           <Card>
             <View style={styles.creAppModalInnerContainer}>
@@ -346,6 +352,7 @@ const Dashboard = ({navigation}) => {
                             style={styles.hospCardContainer}
                             activeOpacity={0.9}
                             onPress={() => {
+                              console.log(el.uid)
                               setSelectedAvailableHospital(el)
                               setCurrentModalPage(prevState => prevState + 1)
                             }}
