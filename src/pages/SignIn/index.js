@@ -12,23 +12,31 @@ const SignIn = ({navigation}) => {
     const [password, setPassword] = useState('')
 
     const submitHandler = () => {
-        if(email.length < 1) return
-        if(password.length < 1) return
+        if(email.length < 1) return     //cek kalo email kosong
+        if(password.length < 1) return  //cek kalo password kosong
 
         console.log("Logging user in")
 
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(userCredential => {
+                //ambe tu data yang ta simpan di Realtime Database brdasarkan uid
                 firebase.database().ref().child("pengguna").child(userCredential.user.uid).get()
                         .then(snapshot => {
                             if(snapshot.exists()) {
+                                //ambe dpe data
                                 const data = snapshot.val()
 
+                                //simpan tu data yang da dapa ke global context
                                 backendData.setUserDetail({
                                     ...data,
                                     uid: userCredential.user.uid,
                                 })
-
+                                
+                                /*  Kalo misal yang da ta login itu pasien,
+                                    masuk ke panel router pasien.
+                                    
+                                    Mar kalo itu bukang pasien (hospital),
+                                    masuk ke panel router hospital */
                                 navigation.replace(data.type == "patient" ? "MainPatient" : "MainHospital")
                             } else {
                                 console.log("No Data Available when getting user info after sign in")
@@ -38,6 +46,7 @@ const SignIn = ({navigation}) => {
                             console.log("USER SIGN IN ERROR", error)
                         )
             })
+            //handle error pas ba sign in
             .catch(error => {
                 showMessage({
                     message: error.message,

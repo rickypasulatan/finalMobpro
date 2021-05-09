@@ -9,7 +9,8 @@ import FlashMessage from 'react-native-flash-message'
 import { BackendDataProvider } from './contexts/backendDataContext'
 
 const App = () => {
-    const [backendData, setBackendData] = useState({})
+    const [backendData, setBackendData] = useState({})  /*  global context for mo simpang data dari backend
+                                                            pas tu user so login di aplikasi */
     StatusBar.setBarStyle('dark-content')
 
     const setUserDetail = data => {

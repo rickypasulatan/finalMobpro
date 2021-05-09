@@ -13,11 +13,11 @@ const Stack = createStackNavigator()
 const MainRouter = () => {
     return (
         <Stack.Navigator>
-            {/* <Stack.Screen
+            <Stack.Screen
                 name="SplashScreen"
                 component={SplashScreen}
                 options={{headerShown: false}}
-            /> */}
+            />
             <Stack.Screen
                 name="SignIn"
                 component={SignIn}
