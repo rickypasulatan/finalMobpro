@@ -15,7 +15,9 @@ const Settings = ({navigation}) => {
   const backendData = useContext(BackendDataContext)
   
   const setNewNameHandler = () => {
-    firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
+    firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`)
+    //update data di backend firebase
+    .set({
       ...backendData.getUserDetail(),
       name: name,
     })
@@ -26,7 +28,7 @@ const Settings = ({navigation}) => {
         hideOnPress: true
       })
 
-      //update the local data
+      //update data di lokal
       backendData.setUserDetail({
         ...backendData.getUserDetail(),
         name: name
@@ -62,7 +64,9 @@ const Settings = ({navigation}) => {
   }
 
   const setNewRoomCapacityHandler = () => {
-    firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
+    firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`)
+    //update data di backend firebase
+    .set({
       ...backendData.getUserDetail(),
       roomCapacity: parseInt(roomCapacity)
     })
@@ -73,7 +77,7 @@ const Settings = ({navigation}) => {
         hideOnPress: true
       })
 
-      //update the local data
+      //update data di lokal
       backendData.setUserDetail({
         ...backendData.getUserDetail(),
         roomCapacity: parseInt(roomCapacity)
@@ -95,7 +99,11 @@ const Settings = ({navigation}) => {
       timeout: 15000,
     })
     .then(location => {
-      firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
+      //kalo so dapa dpe lokasi
+
+      firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`)
+      //update data di backend firebase
+      .set({
         ...backendData.getUserDetail(),
         latitude: location.latitude,
         longitude: location.longitude,
@@ -107,7 +115,7 @@ const Settings = ({navigation}) => {
           hideOnPress: true
         })
 
-        //update the local data
+        //update data di lokal
         backendData.setUserDetail({
           ...backendData.getUserDetail(),
           latitude: location.latitude,

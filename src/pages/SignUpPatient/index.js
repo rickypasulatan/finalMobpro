@@ -19,6 +19,7 @@ const SignUpPatient = ({navigation}) => {
     const submitHandler = () => {
         let error, i, inputs
 
+        //kumpul jadi satu supaya tinggal mo pake fungsi 'map' for mo eksekusi
         inputs = [
             () => notEmpty(name, "name"),
             () => validEmail(email),
@@ -27,21 +28,36 @@ const SignUpPatient = ({navigation}) => {
         ]
 
         inputs = inputs.map(el => el())
+
+        /*  Skarang tu array inputs so berisi hasil return dari tu
+            fungsi-fungsi yang torang da kumpul tadi.
+            
+            Maka dari itu torang mo cek kalo misal dpe string itu
+            nda kosong, berarti ada error. Torang taru tu error yang
+            da dapa ke variabel 'error' */
         for(i = 0; i<inputs.length; i++)
             if(inputs[i].length > 0) {
                 error = inputs[i]
                 break
             }
 
+        //cek kalo variabel 'error' itu berisi
         if(error) 
+            //kalo io, se muncul dpe error
             showMessage({
                 message: error,
                 type: 'danger',
                 hideOnPress: true
             })
         else
+            //kalo nda, lanjutkan proses registrasi
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(userCredential => {
+                    /*  Skarang dpe akun so selesai bekeng.
+                        Torang mo simpang skrng dpe informasi-
+                        informasi tambahan ke Realtime Database */
+                    
+                    //simpan data user yang teregistrasi ke Realtime Database
                     firebase.database().ref('pengguna/' + userCredential.user.uid).set({
                             name: name,
                             email: email,
@@ -57,6 +73,7 @@ const SignUpPatient = ({navigation}) => {
                                 hideOnPress: true
                             })
                             
+                            //se bersih samua input kong pindah ke page 'SignIn'
                             setName('')
                             setEmail('')
                             setPassword('')
@@ -65,6 +82,7 @@ const SignUpPatient = ({navigation}) => {
                             navigation.replace("SignIn")
                         })
                         .catch(error => {
+                            //handle error pas b simpan ke Realtime Database
                             console.log(error)
                             showMessage({
                                 message: error,
@@ -73,6 +91,7 @@ const SignUpPatient = ({navigation}) => {
                             })
                         })
                 })
+                //handle error pas mo registrasi akun
                 .catch(error => {
                     showMessage({
                         message: error.message,

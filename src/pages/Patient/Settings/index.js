@@ -15,6 +15,7 @@ const Settings = ({navigation}) => {
     const [password, setPassword] = useState('')
 
     const setNewNameHandler = () => {
+        //update data di backend firebase
         firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
             ...backendData.getUserDetail(),
             name: name,
@@ -26,7 +27,7 @@ const Settings = ({navigation}) => {
             hideOnPress: true
             })
 
-            //update the local data
+            //update data di backend lokal
             backendData.setUserDetail({
             ...backendData.getUserDetail(),
             name: name
@@ -67,6 +68,7 @@ const Settings = ({navigation}) => {
                 return
             }
 
+            //update data di backend firebase
             firebase.database().ref(`pengguna/${backendData.getUserDetail().uid}`).set({
                 ...backendData.getUserDetail(),
                 profilePic: base64,
@@ -78,7 +80,7 @@ const Settings = ({navigation}) => {
                 hideOnPress: true
                 })
     
-                //update the local data
+                //update data di backend lokal
                 backendData.setUserDetail({
                 ...backendData.getUserDetail(),
                 profilePic: base64
