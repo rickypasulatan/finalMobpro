@@ -26,7 +26,7 @@ const Dashboard = ({navigation}) => {
                                                             yg sementara ta login
                                                             pe uid */
             .get()
-            .then(snapshot => {
+            .then(async (snapshot) => {
                 if(snapshot.exists()) {
                     let data = []
                     let retrievedData = snapshot.val()
@@ -42,11 +42,13 @@ const Dashboard = ({navigation}) => {
                     /*  kong ambe data dari tiap keys kong taru di list
                         'data' */
                     for(let i=0; i<keys.length; i++) {
-                        data.push({uid: keys[i], ...retrievedData[keys[i]]})
+                        let patientPhoneNumber = (await firebase.database().ref(`pengguna/${retrievedData[keys[i]].patientUid}`).get()).val().phoneNum
+                        
+                        data.push({uid: keys[i], ...retrievedData[keys[i]], phoneNum: patientPhoneNumber})
                     }
 
                     setAppointments(data)
-                    console.log(data)
+                    //console.log(data)
                 } else {
                     console.log("error getting appointments data")
                 }
@@ -239,6 +241,8 @@ const Dashboard = ({navigation}) => {
                                                             <Text>{el.doctorName ? el.doctorName : "Unassigned"}</Text>
                                                             <Text style={[styles.boldText, {marginTop: 15}]}>Patient</Text>
                                                             <Text>{el.patientName}</Text>
+                                                            <Text style={[styles.boldText, {marginTop: 15}]}>Phone Number</Text>
+                                                            <Text>{el.phoneNum}</Text>
                                                         </View>
                                                         <View>
                                                             <Text style={styles.flex1}>{el.date}</Text>
@@ -267,7 +271,9 @@ const Dashboard = ({navigation}) => {
                         <View style={styles.innerModalCardContainer}>
                             <Text style={styles.modalTitleText}> Appointment Details </Text>
                             <Text style={styles.boldText}> Patient Name </Text>
-                            <Text style={{marginBottom: 25}}> {currentSelectedAppointment.patientName}</Text>
+                            <Text style={{marginBottom: 10}}> {currentSelectedAppointment.patientName}</Text>
+                            <Text style={styles.boldText}> Phone Number </Text>
+                            <Text style={{marginBottom: 20}}> {currentSelectedAppointment.phoneNum} </Text>
                             <Text style={styles.boldText}> Complaint </Text>
                             <Text style={styles.complaintTextBox}> {currentSelectedAppointment.complaint} </Text>
                             <Text style={[{marginTop: 16}, styles.boldText]}> Assign Doctor </Text>
