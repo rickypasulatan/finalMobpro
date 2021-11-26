@@ -1,6 +1,13 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 
+/**
+ * Komponen Header
+ * 
+ * @param {any} navigation - props yang React Navigator kase kalo ini komponen ada didalam navigation container
+ * @param {string} title - judul dari ini halaman 
+ * @returns 
+ */
 const Header = ({navigation, title}) => {
     return (
         <View style={styles.headerContainer}>

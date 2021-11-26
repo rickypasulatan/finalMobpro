@@ -6,6 +6,11 @@ import { Button } from '../../atoms';
 import firebase from '../../../config/firebase'
 import BackendDataContext from '../../../contexts/backendDataContext';
 
+/**
+ * Komponen Drawer
+ * @param {DrawerContentComponentProps<DrawerContentOptions>} props - props yang Drawer.Navigator mo passing
+ * @returns {JSX.Element}
+ */
 const Drawer = (props) => {
     const routes = props.routes;
     const backendData = useContext(BackendDataContext)

@@ -14,6 +14,7 @@ const Appointments = ({navigation}) => {
     const [currentSelectedAppointment, setCurrentSelectedAppointment] = useState({})
     const [assignedDoctor, setAssignedDoctor] = useState('')
 
+    //penjelasan ini fungsi sama deng di Hospital/Dashboard/index.js
     const fetchCurrentAppointments = () => {
         firebase.database()
             .ref('appointments')
@@ -41,6 +42,7 @@ const Appointments = ({navigation}) => {
             })
     }
 
+    //penjelasan ini fungsi sama deng di Hospital/Dashboard/index.js
     const approveAppointment = () => {
         firebase.database()
             .ref(`appointments/${currentSelectedAppointment.uid}`)
@@ -83,6 +85,7 @@ const Appointments = ({navigation}) => {
             })
     }
 
+    //penjelasan ini fungsi sama deng di Hospital/Dashboard/index.js
     const appointmentApprovalButtonHandler = el => {
         if(el.status == "awaiting") {
             setCurrentSelectedAppointment(el)
@@ -129,6 +132,7 @@ const Appointments = ({navigation}) => {
     }
 
     useEffect(() => {
+        //bekeng supaya tiap kali ini screen muncul, fetchCurrentAppointment mo ta eksekusi
         const unsubscribe = navigation.addListener('focus', fetchCurrentAppointments)
 
         return unsubscribe

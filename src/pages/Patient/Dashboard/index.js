@@ -10,7 +10,10 @@ import moment from 'moment'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import GetLocation from 'react-native-get-location'
 
-//https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+/*  Fungsi yang mo kalkulasi jarak antara dua koordinat di planet bumi
+    
+    sumber:
+    https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula*/
 const calculateDistance = (latitude1, longitude1, latitude2, longitude2) => {
   const p = 0.017453292519943295, c = Math.cos
   const a = 0.5 - c((latitude2 - latitude1) * p) / 2 +
@@ -33,18 +36,35 @@ const Dashboard = ({navigation}) => {
   const fetchCurrentAppointments = () => {
     firebase.database()
       .ref('appointments')
-      .orderByChild('patientUid')
-      .equalTo(backendData.getUserDetail().uid).get()
+      .orderByChild('patientUid')                     //filter appointment
+      .equalTo(backendData.getUserDetail().uid).get() //berdasarkan uid di akun pasien sekarang
       .then(snapshot => {
         if(snapshot.exists()) {
           let data = []
           let retrievedData = snapshot.val()
+          //ini sama deng di Hospital/Dashboard/index.js
           let keys = Object.keys(retrievedData)
           
+          //ini sama deng di Hospital/Dashboard/index.js
           for(let i=0; i<keys.length; i++) {
             data.push(retrievedData[keys[i]])
           }
 
+          /*  Khusus untuk current appointment di patient,
+              satu patient bisa saja bikin beberapa appointment,
+              jadi depe data di backend so ta campur, ada yang
+              masih 'awaiting', ada yang so 'ongoing', deng ada
+              yg so 'completed'.
+              
+              Nah di card current appointment di patient, itu dia
+              mo se muncul appointment yang paling baru yang belum
+              berstatus 'completed'. Terus krna data appointment
+              di backend itu nd terurut, torang msti urutkan depe
+              data di client sini.
+              
+              Maka dari itu setelah torang dapa depe data appointment
+              for ini patient, torang urutkan dari appointment yang
+              paling baru.*/
           data.sort((firstEl, secondEl) => {
             if(moment(firstEl.date, 'DD-MM-YYYY HH:mm:ss').isBefore(moment(secondEl.date, 'DD-MM-YYYY HH:mm:ss')))
               return 1
@@ -55,6 +75,9 @@ const Dashboard = ({navigation}) => {
             return 0
           })
 
+          /*  Khusus untuk data appointment paling baru, torang mo ambe
+              depe address dari tu rumah sakit yang patient ini ada
+              pilih for mo bekeng akang appointment. */
           firebase.database()
             .ref('pengguna')
             .child(data[0].hospitalUid)
@@ -95,6 +118,9 @@ const Dashboard = ({navigation}) => {
   }
 
   useEffect(() => {
+    /*  Bekeng supaya tiap kali ini screen muncul, torang mo pangge
+        fetchCurrentAppointment deng mo simpan lokasi gps dari perangkat
+        sekarang */
     const unsubscribe = navigation.addListener('focus', () => {
       fetchCurrentAppointments()
       GetLocation.getCurrentPosition({
@@ -114,6 +140,8 @@ const Dashboard = ({navigation}) => {
           })
       })
     })
+    /*  Khusus kalo ini screen baru muncul untuk pertama kalinya, torang
+        jalankan hal yang sama seperti di atas. */
     fetchCurrentAppointments()
 
     GetLocation.getCurrentPosition({
@@ -137,6 +165,7 @@ const Dashboard = ({navigation}) => {
   }, [navigation])
 
   const getAvailableHospitalListHandler = () => {
+    console.log('getAvailableHospitalListHander fired')
     firebase.database().ref().child('pengguna').get()
       .then(snapshot => {
         if(snapshot.exists()) {
@@ -145,24 +174,26 @@ const Dashboard = ({navigation}) => {
 
           let hospitals = []
 
-          
+          console.log("retrieved data from firebase")          
           
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
           })
           .then(location => {
+            console.log("retrieved current location")
             const {latitude, longitude} = location
-      
-            hospitals.map(el => console.log(calculateDistance(el.latitude, el.longitude, latitude, longitude)))
 
             for(let i=0; i<userIdList.length; i++) {
               if(data[userIdList[i]].type === "hospital" && 
                   data[userIdList[i]].roomCapacity > 0 &&
                   calculateDistance(data[userIdList[i]].latitude, data[userIdList[i]].longitude, latitude, longitude) <= 17) {
-                hospitals.push(data[userIdList[i]])
+                console.log(data[userIdList[i]])
+                hospitals.push({uid: userIdList[i], ...data[userIdList[i]]})
               }
             }
+
+            hospitals.map(el => console.log(calculateDistance(el.latitude, el.longitude, latitude, longitude)))
 
             setAvailableHospital(hospitals);
           })
@@ -176,6 +207,7 @@ const Dashboard = ({navigation}) => {
   }
 
   const sendAppointmentRequestHandler = () => {
+    //torang kirim appointment ke backend server
     firebase.database().ref(`appointments/${uuid.v4()}`).set({
       patientUid: backendData.getUserDetail().uid,
       hospitalUid: selectedAvailableHospital.uid,
@@ -300,7 +332,10 @@ const Dashboard = ({navigation}) => {
         }
       </ScrollView>
 
-      <Modal isVisible={isCreateAppointmentModalVisible}>
+      <Modal isVisible={isCreateAppointmentModalVisible} onBackButtonPress={() => {
+        setIsCreateAppointmentModalVisible(false)
+        setCurrentModalPage(0)
+      }}>
         <View style={styles.creAppModalContainer}>
           <Card>
             <View style={styles.creAppModalInnerContainer}>
@@ -317,6 +352,7 @@ const Dashboard = ({navigation}) => {
                             style={styles.hospCardContainer}
                             activeOpacity={0.9}
                             onPress={() => {
+                              console.log(el.uid)
                               setSelectedAvailableHospital(el)
                               setCurrentModalPage(prevState => prevState + 1)
                             }}

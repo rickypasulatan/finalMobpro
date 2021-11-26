@@ -6,8 +6,6 @@ import BackendDataContext from '../../../contexts/backendDataContext'
 
 const History = ({navigation}) => {
     const backendData = useContext(BackendDataContext)
-    const [appointments, setAppointments] = useState([])
-    console.log(backendData.getAppointments())
 
     return (
         <ScrollView>
@@ -15,6 +13,12 @@ const History = ({navigation}) => {
             <View style={styles.container}>
                 <View style={styles.CAcardContainer}>
                     {
+                        /*  Cek kalo getAppointment nd return undefined,
+                            abis itu cek kalo depe data yang ta return itu lebih dari 0,
+                            abis itu cek kalo data di posisi pertama (appointment terbaru)
+                            itu nda berstatus 'completed'.
+                            
+                            Kalo itu tiga kondisi terpenuhi, tampilkan card current appointment */
                         backendData.getAppointments() != undefined && backendData.getAppointments().length > 0 && backendData.getAppointments()[0].status != 'completed' ?
                         <View style={styles.cardCA}>
                             <Card>
@@ -60,7 +64,7 @@ const History = ({navigation}) => {
                             {
                                 backendData.getAppointments() != undefined && backendData.getAppointments().map((el, idx) =>
                                     el.status == "completed" &&
-                                    <View style={styles.appointmentsCardContainer}>
+                                    <View key={idx} style={styles.appointmentsCardContainer}>
                                         <Card>
                                             <View style={styles.appointmentsCardInnerContainer}>
                                                 <Text>{el.hospitalName}</Text>
@@ -82,11 +86,28 @@ const History = ({navigation}) => {
 export default History
 
 const styles = StyleSheet.create({
-    container: {width: '100%', height: '100%'},
-    CAcardContainer: {marginBottom: 20},
-    PAscrollViewContainer: {flex: 1, backgroundColor: '#E0E0E0', margin: 15, padding: 5, borderRadius: 25},
-    appointmentsCardContainer: {overflow: 'hidden', borderRadius: 25, marginBottom: 10},
-    appointmentsCardInnerContainer: {padding: 15},
+    container: {
+        width: '100%', 
+        height: '100%'
+    },
+    CAcardContainer: {
+        marginBottom: 20
+    },
+    PAscrollViewContainer: {
+        flex: 1, 
+        backgroundColor: '#E0E0E0', 
+        margin: 15, 
+        padding: 5, 
+        borderRadius: 25
+    },
+    appointmentsCardContainer: {
+        overflow: 'hidden', 
+        borderRadius: 25, 
+        marginBottom: 10
+    },
+    appointmentsCardInnerContainer: {
+        padding: 15
+    },
     cardCA : { //Current Appointment
         height: 240, 
         paddingHorizontal: 15, 
